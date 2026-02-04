@@ -8,3 +8,5 @@ Data Generation: [Open data_generation notebook in Google Colab](https://colab.r
 - Generates data with an opening book injected
 - Resamples Top-K boards at higher nsteps
 - No mirroring
+
+CNN Builder: [Open cnn builder in Google Colab](https://colab.research.google.com/github/AHMerrill/connect-4/blob/main/network_training/cnn_builder.ipynb)
