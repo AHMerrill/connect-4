@@ -1,0 +1,777 @@
+<!--
+  GAME SETUP PAGE - UT LONGHORNS FINAL VERSION
+  With Modals for How to Play, About Models, and Credits
+  Paste into: Properties Panel → Custom HTML → Edit
+-->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap');
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+:root {
+  --burnt-orange: #BF5700;
+  --dark-orange: #9D4700;
+  --light-orange: #E87511;
+  --cream: #FFF8F0;
+  --charcoal: #333F48;
+  --dark-charcoal: #1C2127;
+  --white: #FFFFFF;
+}
+.setup-page {
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(28, 33, 39, 0.9) 0%, rgba(51, 63, 72, 0.85) 50%, rgba(28, 33, 39, 0.9) 100%),
+    url('https://images.unsplash.com/photo-1595169359806-eee943bd8b97?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat fixed;
+  padding: 40px 20px;
+  font-family: 'Roboto', sans-serif;
+}
+.setup-container {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+.welcome-text {
+  font-size: 18px;
+  color: #888;
+  margin-bottom: 10px;
+}
+.setup-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--burnt-orange);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+.setup-subtitle {
+  font-size: 14px;
+  color: var(--cream);
+  opacity: 0.6;
+  margin-bottom: 45px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+.section {
+  margin-bottom: 40px;
+}
+.section-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  color: var(--burnt-orange);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+/* Model Cards */
+.model-cards {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+.model-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid rgba(191, 87, 0, 0.2);
+  border-radius: 15px;
+  padding: 30px 35px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 200px;
+  backdrop-filter: blur(10px);
+}
+.model-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(191, 87, 0, 0.5);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+.model-card.selected {
+  border-color: var(--burnt-orange);
+  background: rgba(191, 87, 0, 0.1);
+  box-shadow: 0 0 30px rgba(191, 87, 0, 0.2);
+}
+.model-icon {
+  font-size: 45px;
+  margin-bottom: 15px;
+}
+.model-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  color: var(--cream);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.model-desc {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 12px;
+}
+.model-badge {
+  display: inline-block;
+  background: rgba(191, 87, 0, 0.2);
+  color: var(--burnt-orange);
+  font-size: 10px;
+  padding: 5px 12px;
+  border-radius: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+/* Player Cards */
+.player-cards {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+.player-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 22px 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+.player-card:hover {
+  transform: scale(1.02);
+}
+.player-card.selected.orange {
+  border-color: var(--burnt-orange);
+  background: rgba(191, 87, 0, 0.15);
+  box-shadow: 0 0 25px rgba(191, 87, 0, 0.3);
+}
+.player-card.selected.white {
+  border-color: var(--cream);
+  background: rgba(255, 248, 240, 0.1);
+  box-shadow: 0 0 25px rgba(255, 248, 240, 0.2);
+}
+.player-chip {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+.player-chip.orange {
+  background: radial-gradient(circle at 30% 30%, var(--light-orange), var(--burnt-orange), var(--dark-orange));
+  box-shadow: 0 4px 15px rgba(191, 87, 0, 0.5);
+}
+.player-chip.white {
+  background: radial-gradient(circle at 30% 30%, #FFFFFF, #F0E6DC, #D4C4B0);
+  box-shadow: 0 4px 15px rgba(255, 248, 240, 0.3);
+}
+.player-info {
+  text-align: left;
+}
+.player-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  color: var(--cream);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+.player-desc {
+  font-size: 13px;
+  color: #888;
+}
+/* Start Button */
+.start-btn {
+  background: linear-gradient(135deg, var(--burnt-orange) 0%, var(--dark-orange) 100%);
+  border: none;
+  border-radius: 12px;
+  padding: 20px 60px;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Oswald', sans-serif;
+  color: var(--white);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  box-shadow: 0 6px 25px rgba(191, 87, 0, 0.3);
+  margin-top: 15px;
+}
+.start-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 35px rgba(191, 87, 0, 0.5);
+}
+.start-btn:disabled {
+  background: #444;
+  color: #777;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.status-text {
+  font-size: 14px;
+  color: #666;
+  margin-top: 25px;
+}
+.status-text.online {
+  color: #4CAF50;
+}
+.status-text.offline {
+  color: var(--burnt-orange);
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 30px 0 25px 0;
+}
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(191, 87, 0, 0.3);
+}
+.divider-text {
+  padding: 0 20px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+/* AI vs AI Button */
+.ai-vs-ai-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 16px 40px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  color: var(--cream);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0 auto;
+}
+.ai-vs-ai-btn:hover {
+  background: rgba(191, 87, 0, 0.15);
+  border-color: var(--burnt-orange);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(191, 87, 0, 0.2);
+}
+.ai-vs-ai-icon {
+  font-size: 20px;
+}
+.ai-vs-ai-text {
+  font-weight: 500;
+}
+.ai-vs-ai-hint {
+  font-size: 12px;
+  color: #666;
+  margin-top: 12px;
+  font-style: italic;
+}
+
+/* Footer Links */
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 40px;
+  padding-top: 25px;
+  border-top: 1px solid rgba(191, 87, 0, 0.2);
+}
+.footer-link {
+  background: transparent;
+  border: 1px solid rgba(191, 87, 0, 0.3);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  color: var(--cream);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.footer-link:hover {
+  background: rgba(191, 87, 0, 0.15);
+  border-color: var(--burnt-orange);
+  transform: translateY(-2px);
+}
+.footer-link-icon {
+  font-size: 16px;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.modal-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+.modal-content {
+  background: linear-gradient(180deg, rgba(40, 45, 55, 0.98) 0%, rgba(28, 33, 39, 0.98) 100%);
+  border: 2px solid var(--burnt-orange);
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 550px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5),
+              0 0 40px rgba(191, 87, 0, 0.2);
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+.modal-overlay.active .modal-content {
+  transform: scale(1);
+}
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  line-height: 1;
+}
+.modal-close:hover {
+  color: var(--burnt-orange);
+}
+.modal-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  color: var(--burnt-orange);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.modal-title-icon {
+  font-size: 32px;
+}
+.modal-subtitle {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+.modal-body {
+  color: var(--cream);
+  line-height: 1.7;
+}
+.modal-body h3 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  color: var(--burnt-orange);
+  margin: 25px 0 12px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.modal-body h3:first-child {
+  margin-top: 0;
+}
+.modal-body p {
+  font-size: 14px;
+  margin-bottom: 12px;
+  color: rgba(255, 248, 240, 0.85);
+}
+.modal-body ul {
+  margin: 10px 0 15px 20px;
+  font-size: 14px;
+}
+.modal-body li {
+  margin-bottom: 8px;
+  color: rgba(255, 248, 240, 0.85);
+}
+.modal-body .highlight {
+  color: var(--burnt-orange);
+  font-weight: 600;
+}
+.modal-body .stat {
+  display: inline-block;
+  background: rgba(191, 87, 0, 0.15);
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--burnt-orange);
+  margin: 2px 0;
+}
+
+/* Credits specific styles */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+.team-member {
+  background: rgba(191, 87, 0, 0.1);
+  border: 1px solid rgba(191, 87, 0, 0.2);
+  border-radius: 10px;
+  padding: 18px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+.team-member:hover {
+  border-color: var(--burnt-orange);
+  transform: translateY(-2px);
+}
+.team-member-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+.team-member-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  color: var(--cream);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.university-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 25px;
+  padding: 15px;
+  background: rgba(191, 87, 0, 0.1);
+  border-radius: 10px;
+  border: 1px solid rgba(191, 87, 0, 0.2);
+}
+.university-badge-icon {
+  font-size: 24px;
+}
+.university-badge-text {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  color: var(--burnt-orange);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* GitHub Link */
+.github-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  color: var(--cream);
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+.github-link:hover {
+  background: rgba(191, 87, 0, 0.15);
+  border-color: var(--burnt-orange);
+  transform: translateY(-2px);
+}
+.github-icon {
+  font-size: 18px;
+}
+.external-icon {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* Model comparison table */
+.model-compare {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+  font-size: 13px;
+}
+.model-compare th {
+  background: rgba(191, 87, 0, 0.2);
+  color: var(--burnt-orange);
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 12px;
+  text-align: left;
+}
+.model-compare td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: rgba(255, 248, 240, 0.85);
+}
+.model-compare tr:hover td {
+  background: rgba(191, 87, 0, 0.05);
+}
+</style>
+
+<div class="setup-page">
+  <div class="setup-container">
+    <p id="welcome-text" class="welcome-text">Welcome, Player!</p>
+    <h1 class="setup-title">Choose Your Battle</h1>
+    <p class="setup-subtitle">Texas Fight!</p>
+
+    <!-- Model Selection -->
+    <div class="section">
+      <h2 class="section-title">Select Your Opponent</h2>
+      <div class="model-cards">
+        <div class="model-card" id="card-cnn">
+          <div class="model-icon">🧠</div>
+          <div class="model-name">CNN</div>
+          <div class="model-desc">Convolutional Neural Network</div>
+          <div class="model-badge">Pattern Wrangler</div>
+        </div>
+        <div class="model-card" id="card-transformer">
+          <div class="model-icon">⚡</div>
+          <div class="model-name">Transformer</div>
+          <div class="model-desc">Attention-Based Model</div>
+          <div class="model-badge">Strategic Longhorn</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Player Selection -->
+    <div class="section">
+      <h2 class="section-title">Choose Your Side</h2>
+      <div class="player-cards">
+        <div class="player-card orange" id="card-player1">
+          <div class="player-chip orange"></div>
+          <div class="player-info">
+            <div class="player-name">Player 1</div>
+            <div class="player-desc">Go First - Burnt Orange</div>
+          </div>
+        </div>
+        <div class="player-card white" id="card-player2">
+          <div class="player-chip white"></div>
+          <div class="player-info">
+            <div class="player-name">Player 2</div>
+            <div class="player-desc">Go Second - White</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Start Button -->
+    <button class="start-btn" id="start-btn" disabled>Hook 'Em 🤘</button>
+
+    <!-- Divider -->
+    <div class="divider">
+      <span class="divider-text">OR</span>
+    </div>
+
+    <!-- AI vs AI Button -->
+    <button class="ai-vs-ai-btn" id="btn-ai-vs-ai">
+      <span class="ai-vs-ai-icon">🤖</span>
+      <span class="ai-vs-ai-text">Watch AI vs AI Battle</span>
+      <span class="ai-vs-ai-icon">🤖</span>
+    </button>
+    <p class="ai-vs-ai-hint">CNN vs Transformer - First 4 moves random for variety</p>
+
+    <!-- Status -->
+    <p class="status-text" id="status-text">Checking server connection...</p>
+
+    <!-- Footer Links -->
+    <div class="footer-links">
+      <button class="footer-link" id="btn-how-to-play">
+        <span class="footer-link-icon">📖</span>
+        How to Play
+      </button>
+      <button class="footer-link" id="btn-about-models">
+        <span class="footer-link-icon">🤖</span>
+        About Models
+      </button>
+      <button class="footer-link" id="btn-credits">
+        <span class="footer-link-icon">👥</span>
+        Credits
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- HOW TO PLAY MODAL -->
+<div class="modal-overlay" id="modal-how-to-play">
+  <div class="modal-content">
+    <button class="modal-close" id="close-how-to-play">&times;</button>
+    <h2 class="modal-title">
+      <span class="modal-title-icon">📖</span>
+      How to Play
+    </h2>
+    <p class="modal-subtitle">Connect 4 - Longhorn Edition</p>
+    <div class="modal-body">
+      <h3>Getting Started</h3>
+      <p>Challenge an AI opponent by selecting your preferred model (CNN or Transformer) and choosing to play as <span class="highlight">Player 1 (Burnt Orange)</span> or <span class="highlight">Player 2 (White)</span>.</p>
+
+      <h3>Objective</h3>
+      <p>Be the first to connect <span class="highlight">four of your chips</span> in a row - horizontally, vertically, or diagonally!</p>
+
+      <h3>Gameplay</h3>
+      <ul>
+        <li><span class="highlight">Player 1</span> (Burnt Orange) always moves first</li>
+        <li>Click on any column to drop your chip</li>
+        <li>Chips fall to the lowest available position</li>
+        <li>Players alternate turns until someone wins or the board fills up</li>
+      </ul>
+
+      <h3>Tips</h3>
+      <ul>
+        <li>Control the <span class="highlight">center column</span> - it's part of the most winning combinations</li>
+        <li>Watch for diagonal threats - they're easy to miss!</li>
+        <li>Try to create multiple winning threats at once</li>
+        <li>Block your opponent while building your own connections</li>
+      </ul>
+
+      <h3>Fun Fact</h3>
+      <p>Connect 4 is a <span class="highlight">solved game</span> - with perfect play, the first player can always win. Can you beat our AI?</p>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT MODELS MODAL -->
+<div class="modal-overlay" id="modal-about-models">
+  <div class="modal-content">
+    <button class="modal-close" id="close-about-models">&times;</button>
+    <h2 class="modal-title">
+      <span class="modal-title-icon">🤖</span>
+      About the Models
+    </h2>
+    <p class="modal-subtitle">AI Opponents</p>
+    <div class="modal-body">
+      <h3>🧠 CNN (Convolutional Neural Network)</h3>
+      <p>An <span class="highlight">AlphaZero-style</span> residual CNN that treats the board like an image.</p>
+      <ul>
+        <li>Uses 2D convolutions to scan the 6x7 board</li>
+        <li>Residual blocks detect patterns like lines, threats, and blocks</li>
+        <li>Trained on <span class="stat">700K+ game positions</span> from MCTS simulations</li>
+        <li>Outputs a <span class="highlight">policy</span> (best column) and <span class="highlight">value</span> (win probability)</li>
+      </ul>
+
+      <h3>⚡ Transformer</h3>
+      <p>A <span class="highlight">Vision Transformer</span> architecture adapted for Connect 4.</p>
+      <ul>
+        <li>Uses attention mechanisms to analyze relationships between all 42 positions</li>
+        <li>6 transformer blocks with 8 attention heads each</li>
+        <li>Trained on <span class="stat">1.4M+ positions</span> (with mirror augmentation)</li>
+        <li>Achieves <span class="stat">77% policy accuracy</span> and <span class="stat">92% top-2 accuracy</span></li>
+      </ul>
+
+      <h3>How They Were Trained</h3>
+      <p>Both models learned by studying moves from <span class="highlight">Monte Carlo Tree Search (MCTS)</span> - an algorithm that simulates thousands of games to find the best moves. The models learned to predict what MCTS would play.</p>
+
+      <h3>Model Comparison</h3>
+      <table class="model-compare">
+        <tr>
+          <th>Feature</th>
+          <th>CNN</th>
+          <th>Transformer</th>
+        </tr>
+        <tr>
+          <td>Architecture</td>
+          <td>Residual CNN</td>
+          <td>Vision Transformer</td>
+        </tr>
+        <tr>
+          <td>Training Data</td>
+          <td>700K+ positions</td>
+          <td>1.4M+ positions</td>
+        </tr>
+        <tr>
+          <td>Approach</td>
+          <td>Pattern recognition</td>
+          <td>Attention-based</td>
+        </tr>
+        <tr>
+          <td>Style</td>
+          <td>Visual patterns</td>
+          <td>Positional relationships</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- CREDITS MODAL -->
+<div class="modal-overlay" id="modal-credits">
+  <div class="modal-content">
+    <button class="modal-close" id="close-credits">&times;</button>
+    <h2 class="modal-title">
+      <span class="modal-title-icon">👥</span>
+      Credits
+    </h2>
+    <p class="modal-subtitle">The Team Behind the Game</p>
+    <div class="modal-body">
+      <h3>Development Team</h3>
+      <div class="team-grid">
+        <div class="team-member">
+          <div class="team-member-icon">🤘</div>
+          <div class="team-member-name">Alina Hota</div>
+        </div>
+        <div class="team-member">
+          <div class="team-member-icon">🤘</div>
+          <div class="team-member-name">Arturo Juarez</div>
+        </div>
+        <div class="team-member">
+          <div class="team-member-icon">🤘</div>
+          <div class="team-member-name">Zan Merrill</div>
+        </div>
+        <div class="team-member">
+          <div class="team-member-icon">🤘</div>
+          <div class="team-member-name">Rohini Sondole</div>
+        </div>
+      </div>
+
+      <h3>Technologies Used</h3>
+      <ul>
+        <li><span class="highlight">TensorFlow/Keras</span> - Deep learning framework</li>
+        <li><span class="highlight">Anvil</span> - Web application platform</li>
+        <li><span class="highlight">AWS Lightsail</span> - Cloud hosting</li>
+        <li><span class="highlight">Docker</span> - Containerization</li>
+        <li><span class="highlight">Python</span> - Backend development</li>
+      </ul>
+
+      <h3>Course</h3>
+      <p>Optimization II - Spring 2026</p>
+
+      <h3>Source Code</h3>
+      <a href="https://github.com/AHMerrill/connect-4" target="_blank" class="github-link">
+        <span class="github-icon">📂</span>
+        <span>github.com/AHMerrill/connect-4</span>
+        <span class="external-icon">↗</span>
+      </a>
+
+      <div class="university-badge">
+        <span class="university-badge-icon">🐂</span>
+        <span class="university-badge-text">The University of Texas at Austin</span>
+      </div>
+    </div>
+  </div>
+</div>

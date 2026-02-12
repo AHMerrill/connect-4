@@ -1,0 +1,207 @@
+<!--
+  LOGIN PAGE - UT LONGHORNS FINAL VERSION
+  With UT Tower Background
+  Paste into: Properties Panel → Custom HTML → Edit
+-->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap');
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+:root {
+  --burnt-orange: #BF5700;
+  --dark-orange: #9D4700;
+  --light-orange: #E87511;
+  --cream: #FFF8F0;
+  --charcoal: #333F48;
+  --dark-charcoal: #1C2127;
+  --white: #FFFFFF;
+}
+.login-page {
+  min-height: 100vh;
+  /* UT TOWER BACKGROUND */
+  background:
+    linear-gradient(135deg, rgba(28, 33, 39, 0.88) 0%, rgba(51, 63, 72, 0.82) 50%, rgba(28, 33, 39, 0.88) 100%),
+    url('https://images.unsplash.com/photo-1595169359806-eee943bd8b97?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  font-family: 'Roboto', sans-serif;
+  overflow: hidden;
+}
+/* Bevo silhouette in background */
+.bevo-bg {
+  position: absolute;
+  right: -50px;
+  bottom: -30px;
+  font-size: 280px;
+  opacity: 0.06;
+  transform: scaleX(-1);
+  pointer-events: none;
+  z-index: 1;
+}
+.bevo-bg-left {
+  position: absolute;
+  left: -80px;
+  top: 50px;
+  font-size: 180px;
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 1;
+}
+.login-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 50px 45px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5),
+              0 0 0 1px rgba(191, 87, 0, 0.2);
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  z-index: 10;
+  border-top: 4px solid var(--burnt-orange);
+  position: relative;
+}
+.logo-container {
+  margin-bottom: 20px;
+}
+.longhorn-icon {
+  font-size: 65px;
+  color: var(--burnt-orange);
+  text-shadow: 0 0 30px rgba(191, 87, 0, 0.5);
+  animation: glow 3s ease-in-out infinite;
+}
+@keyframes glow {
+  0%, 100% { text-shadow: 0 0 20px rgba(191, 87, 0, 0.4); }
+  50% { text-shadow: 0 0 40px rgba(191, 87, 0, 0.7); }
+}
+.game-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 46px;
+  font-weight: 700;
+  color: var(--burnt-orange);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+.game-subtitle {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  color: var(--cream);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  opacity: 0.8;
+}
+.tagline {
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 35px;
+  font-style: italic;
+}
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.login-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 2px solid rgba(191, 87, 0, 0.3);
+  border-radius: 10px;
+  color: var(--cream);
+  padding: 16px 20px;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  transition: all 0.3s ease;
+}
+.login-input::placeholder {
+  color: #666;
+}
+.login-input:focus {
+  outline: none;
+  border-color: var(--burnt-orange);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 20px rgba(191, 87, 0, 0.2);
+}
+.error-message {
+  color: #FF6B6B;
+  font-size: 14px;
+  min-height: 20px;
+}
+.login-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--burnt-orange) 0%, var(--dark-orange) 100%);
+  border: none;
+  border-radius: 10px;
+  padding: 18px 40px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Oswald', sans-serif;
+  color: var(--white);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-top: 10px;
+  box-shadow: 0 4px 20px rgba(191, 87, 0, 0.3);
+}
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(191, 87, 0, 0.5);
+  background: linear-gradient(135deg, var(--light-orange) 0%, var(--burnt-orange) 100%);
+}
+.demo-hint {
+  font-size: 12px;
+  color: #555;
+  margin-top: 25px;
+}
+.bevo-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: rgba(191, 87, 0, 0.1);
+  border-radius: 25px;
+  border: 1px solid rgba(191, 87, 0, 0.2);
+}
+.bevo-badge span {
+  font-size: 20px;
+}
+.bevo-badge-text {
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  color: var(--burnt-orange);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+</style>
+<div class="login-page">
+  <div class="bevo-bg">🐂</div>
+  <div class="bevo-bg-left">🐂</div>
+  <div class="login-card">
+    <div class="logo-container">
+      <div class="longhorn-icon">🤘</div>
+    </div>
+    <h1 class="game-title">CONNECT 4</h1>
+    <p class="game-subtitle">Longhorn Edition</p>
+    <p class="tagline">What starts here changes the game</p>
+    <div class="login-form">
+      <input type="text" id="username" class="login-input" placeholder="Username">
+      <input type="password" id="password" class="login-input" placeholder="Password">
+      <div id="error-msg" class="error-message"></div>
+      <button id="login-btn" class="login-btn">Hook 'Em & Enter</button>
+    </div>
+    <p class="demo-hint">Demo: username "demo", password "demo"</p>
+    <div class="bevo-badge">
+      <span>🐂</span>
+      <span class="bevo-badge-text">Bevo Approved</span>
+    </div>
+  </div>
+</div>
