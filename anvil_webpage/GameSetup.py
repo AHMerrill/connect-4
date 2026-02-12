@@ -19,11 +19,6 @@ class GameSetup(GameSetupTemplate):
         from anvil.js.window import document
         self.doc = document
 
-        # Set welcome text
-        welcome = self.doc.getElementById('welcome-text')
-        if welcome:
-            welcome.textContent = f"Welcome, {self.username}!"
-
         # Get elements
         self.cnn_card = self.doc.getElementById('card-cnn')
         self.trans_card = self.doc.getElementById('card-transformer')
@@ -59,11 +54,14 @@ class GameSetup(GameSetupTemplate):
         """Setup modal open/close handlers"""
         # Footer buttons to open modals
         btn_how_to_play = self.doc.getElementById('btn-how-to-play')
+        btn_about_ai = self.doc.getElementById('btn-about-ai')
         btn_about_models = self.doc.getElementById('btn-about-models')
         btn_credits = self.doc.getElementById('btn-credits')
 
         if btn_how_to_play:
             btn_how_to_play.addEventListener('click', lambda e: self.open_modal('modal-how-to-play'))
+        if btn_about_ai:
+            btn_about_ai.addEventListener('click', lambda e: open_form('AboutAI', username=self.username))
         if btn_about_models:
             btn_about_models.addEventListener('click', lambda e: self.open_modal('modal-about-models'))
         if btn_credits:

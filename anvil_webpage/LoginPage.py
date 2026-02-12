@@ -13,7 +13,8 @@ class LoginPage(LoginPageTemplate):
         self.valid_users = {
             "demo": "demo",
             "player1": "connect4",
-            "admin": "admin123"
+            "admin": "admin123",
+            "dan": "Optimization1234"
         }
 
     def form_show(self, **event_args):
