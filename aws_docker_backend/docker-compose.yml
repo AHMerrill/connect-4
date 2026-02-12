@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  connect4-backend:
+    build: .
+    container_name: connect4-backend
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./models:/app/models:ro  # Mount models directory (read-only)
+      - ./logs:/app/logs         # Mount logs directory
+    network_mode: host
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

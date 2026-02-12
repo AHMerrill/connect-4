@@ -1,0 +1,507 @@
+<!--
+  GAME BOARD PAGE - UT LONGHORNS FINAL VERSION
+  With Rematch Button and AI vs AI Mode
+  Paste into: Properties Panel → Custom HTML → Edit
+-->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap');
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+:root {
+  --burnt-orange: #BF5700;
+  --dark-orange: #9D4700;
+  --light-orange: #E87511;
+  --cream: #FFF8F0;
+  --charcoal: #333F48;
+  --dark-charcoal: #1C2127;
+  --white: #FFFFFF;
+}
+.game-page {
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(28, 33, 39, 0.85) 0%, rgba(51, 63, 72, 0.75) 50%, rgba(28, 33, 39, 0.9) 100%),
+    url('https://images.unsplash.com/photo-1595169359806-eee943bd8b97?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat fixed;
+  padding: 25px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Roboto', sans-serif;
+  position: relative;
+}
+/* Header */
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 580px;
+  margin-bottom: 20px;
+  z-index: 10;
+}
+.game-info {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  color: var(--cream);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+.header-buttons {
+  display: flex;
+  gap: 10px;
+}
+.header-btn {
+  background: rgba(191, 87, 0, 0.3);
+  border: 1px solid rgba(191, 87, 0, 0.5);
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  color: var(--cream);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  backdrop-filter: blur(5px);
+}
+.header-btn:hover {
+  background: rgba(191, 87, 0, 0.5);
+  border-color: var(--burnt-orange);
+}
+/* Turn Indicator */
+.turn-indicator {
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  padding: 15px 40px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  transition: all 0.4s ease;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+}
+.turn-indicator.your-turn {
+  color: var(--burnt-orange);
+  background: rgba(191, 87, 0, 0.2);
+  border: 2px solid var(--burnt-orange);
+  box-shadow: 0 0 25px rgba(191, 87, 0, 0.3);
+  animation: pulse-orange 2s ease-in-out infinite;
+}
+.turn-indicator.ai-turn {
+  color: var(--cream);
+  background: rgba(255, 248, 240, 0.15);
+  border: 2px solid rgba(255, 248, 240, 0.4);
+}
+.turn-indicator.winner {
+  color: var(--burnt-orange);
+  background: rgba(191, 87, 0, 0.25);
+  border: 2px solid var(--burnt-orange);
+  animation: winner-pulse 0.5s ease-in-out infinite alternate;
+}
+.turn-indicator.loser {
+  color: #aaa;
+  background: rgba(100, 100, 100, 0.2);
+  border: 2px solid #666;
+}
+.turn-indicator.draw {
+  color: var(--cream);
+  background: rgba(255, 248, 240, 0.15);
+  border: 2px solid rgba(255, 248, 240, 0.4);
+}
+/* AI vs AI specific indicator */
+.turn-indicator.cnn-turn {
+  color: var(--burnt-orange);
+  background: rgba(191, 87, 0, 0.2);
+  border: 2px solid var(--burnt-orange);
+}
+.turn-indicator.transformer-turn {
+  color: var(--cream);
+  background: rgba(255, 248, 240, 0.15);
+  border: 2px solid rgba(255, 248, 240, 0.4);
+}
+@keyframes pulse-orange {
+  0%, 100% { box-shadow: 0 0 20px rgba(191, 87, 0, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(191, 87, 0, 0.5); }
+}
+@keyframes winner-pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.03); }
+}
+/* Wooden Table Surface */
+.table-surface {
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.1) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.2) 100%),
+    linear-gradient(90deg, #8B5A2B 0%, #A0522D 25%, #8B4513 50%, #A0522D 75%, #8B5A2B 100%);
+  border-radius: 20px;
+  padding: 30px 35px 35px 35px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 0 4px rgba(139, 90, 43, 0.3),
+    inset 0 2px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 10;
+}
+/* Game Container */
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* Hover Row */
+.hover-row {
+  display: flex;
+  height: 60px;
+  margin-bottom: 8px;
+}
+.hover-cell {
+  width: 70px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  cursor: pointer;
+  padding-bottom: 2px;
+}
+.hover-chip {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  opacity: 0;
+  transform: translateY(-15px);
+  transition: all 0.2s ease;
+}
+.hover-cell:hover .hover-chip {
+  opacity: 0.6;
+  transform: translateY(0);
+}
+.hover-chip.orange {
+  background: radial-gradient(circle at 30% 30%, var(--light-orange), var(--burnt-orange), var(--dark-orange));
+  box-shadow: 0 4px 15px rgba(191, 87, 0, 0.4);
+}
+.hover-chip.white {
+  background: radial-gradient(circle at 30% 30%, #FFFFFF, #F0E6DC, #D4C4B0);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+}
+/* Hide hover row in AI vs AI mode */
+.hover-row.hidden {
+  visibility: hidden;
+}
+/* Game Board - Blue with burnt orange border */
+.board {
+  background: linear-gradient(180deg, #1565C0 0%, #0D47A1 40%, #0A3D91 100%);
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.4),
+    inset 0 2px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.2),
+    0 0 0 4px var(--burnt-orange);
+}
+.board-row {
+  display: flex;
+}
+.cell {
+  width: 70px;
+  height: 70px;
+  padding: 6px;
+  position: relative;
+  cursor: pointer;
+}
+.cell::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #0a1628 0%, #162035 100%);
+  box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.8);
+}
+.chip {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transform: scale(0);
+}
+.chip.orange {
+  opacity: 1;
+  transform: scale(1);
+  background: radial-gradient(circle at 35% 35%, var(--light-orange), var(--burnt-orange), var(--dark-orange));
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.4),
+    inset 0 3px 8px rgba(255, 255, 255, 0.35),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.2);
+}
+.chip.white {
+  opacity: 1;
+  transform: scale(1);
+  background: radial-gradient(circle at 35% 35%, #FFFFFF, #F5EDE5, #D4C4B0);
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.4),
+    inset 0 3px 8px rgba(255, 255, 255, 0.6),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.1);
+}
+.chip.dropping {
+  animation: chip-drop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes chip-drop {
+  0% { opacity: 0.9; transform: translateY(-420px) scale(1); }
+  55% { transform: translateY(10px) scale(1); }
+  70% { transform: translateY(-6px) scale(1); }
+  85% { transform: translateY(3px) scale(1); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.chip.winner {
+  animation: winner-glow 0.6s ease-in-out infinite alternate;
+}
+@keyframes winner-glow {
+  from {
+    filter: brightness(1);
+    box-shadow:
+      0 4px 10px rgba(0, 0, 0, 0.4),
+      0 0 15px rgba(191, 87, 0, 0.5);
+  }
+  to {
+    filter: brightness(1.2);
+    box-shadow:
+      0 4px 10px rgba(0, 0, 0, 0.4),
+      0 0 30px rgba(191, 87, 0, 0.8),
+      0 0 50px rgba(191, 87, 0, 0.4);
+  }
+}
+/* Status */
+.status-message {
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  color: rgba(255, 248, 240, 0.7);
+  margin-top: 20px;
+  min-height: 24px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  z-index: 10;
+}
+
+/* Game Over Buttons */
+.game-over-buttons {
+  display: none;
+  gap: 15px;
+  margin-top: 20px;
+  z-index: 10;
+}
+.game-over-buttons.visible {
+  display: flex;
+}
+.game-over-btn {
+  background: linear-gradient(135deg, var(--burnt-orange) 0%, var(--dark-orange) 100%);
+  border: none;
+  border-radius: 10px;
+  padding: 14px 28px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--white);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  box-shadow: 0 4px 15px rgba(191, 87, 0, 0.3);
+}
+.game-over-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(191, 87, 0, 0.5);
+}
+.game-over-btn.secondary {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: none;
+}
+.game-over-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: none;
+}
+
+/* UT Branding */
+.ut-branding {
+  margin-top: 25px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0.8;
+  z-index: 10;
+}
+.ut-logo {
+  font-size: 28px;
+}
+.ut-text {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  color: var(--burnt-orange);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+/* AI vs AI Info Banner */
+.ai-vs-ai-banner {
+  display: none;
+  background: rgba(191, 87, 0, 0.15);
+  border: 1px solid rgba(191, 87, 0, 0.3);
+  border-radius: 10px;
+  padding: 12px 25px;
+  margin-bottom: 15px;
+  text-align: center;
+  z-index: 10;
+}
+.ai-vs-ai-banner.visible {
+  display: block;
+}
+.ai-vs-ai-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  color: var(--burnt-orange);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 5px;
+}
+.ai-vs-ai-info {
+  font-size: 12px;
+  color: rgba(255, 248, 240, 0.7);
+}
+.ai-vs-ai-score {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  color: var(--cream);
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+
+/* Responsive */
+@media (max-width: 540px) {
+  .cell { width: 48px; height: 48px; padding: 4px; }
+  .cell::before { top: 4px; left: 4px; right: 4px; bottom: 4px; }
+  .chip { width: 40px; height: 40px; }
+  .hover-cell { width: 48px; height: 48px; }
+  .hover-chip { width: 40px; height: 40px; }
+  .turn-indicator { font-size: 18px; padding: 12px 25px; }
+  .table-surface { padding: 20px 15px 25px 15px; }
+  .game-over-buttons { flex-direction: column; }
+}
+</style>
+<div class="game-page">
+  <!-- Header -->
+  <div class="game-header">
+    <div class="game-info" id="game-info">Player vs AI</div>
+    <div class="header-buttons">
+      <button class="header-btn" id="btn-new-game">New Game</button>
+      <button class="header-btn" id="btn-quit">Quit</button>
+    </div>
+  </div>
+
+  <!-- AI vs AI Banner (hidden by default) -->
+  <div class="ai-vs-ai-banner" id="ai-vs-ai-banner">
+    <div class="ai-vs-ai-title">🤖 AI vs AI Battle 🤖</div>
+    <div class="ai-vs-ai-info">First 4 moves are random for variety</div>
+    <div class="ai-vs-ai-score" id="ai-vs-ai-score"></div>
+  </div>
+
+  <!-- Turn Indicator -->
+  <div class="turn-indicator your-turn" id="turn-indicator">YOUR TURN</div>
+
+  <!-- Wooden Table with Game -->
+  <div class="table-surface">
+    <div class="game-container">
+      <!-- Hover Row -->
+      <div class="hover-row" id="hover-row">
+        <div class="hover-cell" data-col="0"><div class="hover-chip" id="hover-0"></div></div>
+        <div class="hover-cell" data-col="1"><div class="hover-chip" id="hover-1"></div></div>
+        <div class="hover-cell" data-col="2"><div class="hover-chip" id="hover-2"></div></div>
+        <div class="hover-cell" data-col="3"><div class="hover-chip" id="hover-3"></div></div>
+        <div class="hover-cell" data-col="4"><div class="hover-chip" id="hover-4"></div></div>
+        <div class="hover-cell" data-col="5"><div class="hover-chip" id="hover-5"></div></div>
+        <div class="hover-cell" data-col="6"><div class="hover-chip" id="hover-6"></div></div>
+      </div>
+      <!-- Board -->
+      <div class="board" id="game-board">
+        <div class="board-row">
+          <div class="cell" data-row="0" data-col="0"><div class="chip" id="chip-0-0"></div></div>
+          <div class="cell" data-row="0" data-col="1"><div class="chip" id="chip-0-1"></div></div>
+          <div class="cell" data-row="0" data-col="2"><div class="chip" id="chip-0-2"></div></div>
+          <div class="cell" data-row="0" data-col="3"><div class="chip" id="chip-0-3"></div></div>
+          <div class="cell" data-row="0" data-col="4"><div class="chip" id="chip-0-4"></div></div>
+          <div class="cell" data-row="0" data-col="5"><div class="chip" id="chip-0-5"></div></div>
+          <div class="cell" data-row="0" data-col="6"><div class="chip" id="chip-0-6"></div></div>
+        </div>
+        <div class="board-row">
+          <div class="cell" data-row="1" data-col="0"><div class="chip" id="chip-1-0"></div></div>
+          <div class="cell" data-row="1" data-col="1"><div class="chip" id="chip-1-1"></div></div>
+          <div class="cell" data-row="1" data-col="2"><div class="chip" id="chip-1-2"></div></div>
+          <div class="cell" data-row="1" data-col="3"><div class="chip" id="chip-1-3"></div></div>
+          <div class="cell" data-row="1" data-col="4"><div class="chip" id="chip-1-4"></div></div>
+          <div class="cell" data-row="1" data-col="5"><div class="chip" id="chip-1-5"></div></div>
+          <div class="cell" data-row="1" data-col="6"><div class="chip" id="chip-1-6"></div></div>
+        </div>
+        <div class="board-row">
+          <div class="cell" data-row="2" data-col="0"><div class="chip" id="chip-2-0"></div></div>
+          <div class="cell" data-row="2" data-col="1"><div class="chip" id="chip-2-1"></div></div>
+          <div class="cell" data-row="2" data-col="2"><div class="chip" id="chip-2-2"></div></div>
+          <div class="cell" data-row="2" data-col="3"><div class="chip" id="chip-2-3"></div></div>
+          <div class="cell" data-row="2" data-col="4"><div class="chip" id="chip-2-4"></div></div>
+          <div class="cell" data-row="2" data-col="5"><div class="chip" id="chip-2-5"></div></div>
+          <div class="cell" data-row="2" data-col="6"><div class="chip" id="chip-2-6"></div></div>
+        </div>
+        <div class="board-row">
+          <div class="cell" data-row="3" data-col="0"><div class="chip" id="chip-3-0"></div></div>
+          <div class="cell" data-row="3" data-col="1"><div class="chip" id="chip-3-1"></div></div>
+          <div class="cell" data-row="3" data-col="2"><div class="chip" id="chip-3-2"></div></div>
+          <div class="cell" data-row="3" data-col="3"><div class="chip" id="chip-3-3"></div></div>
+          <div class="cell" data-row="3" data-col="4"><div class="chip" id="chip-3-4"></div></div>
+          <div class="cell" data-row="3" data-col="5"><div class="chip" id="chip-3-5"></div></div>
+          <div class="cell" data-row="3" data-col="6"><div class="chip" id="chip-3-6"></div></div>
+        </div>
+        <div class="board-row">
+          <div class="cell" data-row="4" data-col="0"><div class="chip" id="chip-4-0"></div></div>
+          <div class="cell" data-row="4" data-col="1"><div class="chip" id="chip-4-1"></div></div>
+          <div class="cell" data-row="4" data-col="2"><div class="chip" id="chip-4-2"></div></div>
+          <div class="cell" data-row="4" data-col="3"><div class="chip" id="chip-4-3"></div></div>
+          <div class="cell" data-row="4" data-col="4"><div class="chip" id="chip-4-4"></div></div>
+          <div class="cell" data-row="4" data-col="5"><div class="chip" id="chip-4-5"></div></div>
+          <div class="cell" data-row="4" data-col="6"><div class="chip" id="chip-4-6"></div></div>
+        </div>
+        <div class="board-row">
+          <div class="cell" data-row="5" data-col="0"><div class="chip" id="chip-5-0"></div></div>
+          <div class="cell" data-row="5" data-col="1"><div class="chip" id="chip-5-1"></div></div>
+          <div class="cell" data-row="5" data-col="2"><div class="chip" id="chip-5-2"></div></div>
+          <div class="cell" data-row="5" data-col="3"><div class="chip" id="chip-5-3"></div></div>
+          <div class="cell" data-row="5" data-col="4"><div class="chip" id="chip-5-4"></div></div>
+          <div class="cell" data-row="5" data-col="5"><div class="chip" id="chip-5-5"></div></div>
+          <div class="cell" data-row="5" data-col="6"><div class="chip" id="chip-5-6"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status -->
+  <div class="status-message" id="status-message"></div>
+
+  <!-- Game Over Buttons (hidden until game ends) -->
+  <div class="game-over-buttons" id="game-over-buttons">
+    <button class="game-over-btn" id="btn-rematch">🔄 Rematch</button>
+    <button class="game-over-btn secondary" id="btn-change-settings">Change Settings</button>
+  </div>
+
+  <!-- UT Branding -->
+  <div class="ut-branding">
+    <span class="ut-logo">🤘</span>
+    <span class="ut-text">Texas Longhorns</span>
+  </div>
+</div>
