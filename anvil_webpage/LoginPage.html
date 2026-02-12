@@ -32,8 +32,8 @@
   font-family: 'Roboto', sans-serif;
   overflow: hidden;
 }
-/* Bevo silhouette in background */
-.bevo-bg {
+/* Longhorn silhouette in background */
+.longhorn-bg {
   position: absolute;
   right: -50px;
   bottom: -30px;
@@ -43,7 +43,7 @@
   pointer-events: none;
   z-index: 1;
 }
-.bevo-bg-left {
+.longhorn-bg-left {
   position: absolute;
   left: -80px;
   top: 50px;
@@ -92,16 +92,10 @@
   font-family: 'Oswald', sans-serif;
   font-size: 16px;
   color: var(--cream);
-  margin-bottom: 8px;
+  margin-bottom: 30px;
   text-transform: uppercase;
   letter-spacing: 6px;
   opacity: 0.8;
-}
-.tagline {
-  font-size: 13px;
-  color: #777;
-  margin-bottom: 35px;
-  font-style: italic;
 }
 .login-form {
   display: flex;
@@ -155,26 +149,21 @@
   box-shadow: 0 8px 30px rgba(191, 87, 0, 0.5);
   background: linear-gradient(135deg, var(--light-orange) 0%, var(--burnt-orange) 100%);
 }
-.demo-hint {
-  font-size: 12px;
-  color: #555;
-  margin-top: 25px;
-}
-.bevo-badge {
+.texas-badge {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 20px;
+  margin-top: 30px;
   padding: 10px 20px;
   background: rgba(191, 87, 0, 0.1);
   border-radius: 25px;
   border: 1px solid rgba(191, 87, 0, 0.2);
 }
-.bevo-badge span {
+.texas-badge span {
   font-size: 20px;
 }
-.bevo-badge-text {
+.texas-badge-text {
   font-family: 'Oswald', sans-serif;
   font-size: 12px;
   color: var(--burnt-orange);
@@ -183,25 +172,23 @@
 }
 </style>
 <div class="login-page">
-  <div class="bevo-bg">🐂</div>
-  <div class="bevo-bg-left">🐂</div>
+  <div class="longhorn-bg">🤘</div>
+  <div class="longhorn-bg-left">🤘</div>
   <div class="login-card">
     <div class="logo-container">
       <div class="longhorn-icon">🤘</div>
     </div>
     <h1 class="game-title">CONNECT 4</h1>
     <p class="game-subtitle">Longhorn Edition</p>
-    <p class="tagline">What starts here changes the game</p>
     <div class="login-form">
       <input type="text" id="username" class="login-input" placeholder="Username">
       <input type="password" id="password" class="login-input" placeholder="Password">
       <div id="error-msg" class="error-message"></div>
       <button id="login-btn" class="login-btn">Hook 'Em & Enter</button>
     </div>
-    <p class="demo-hint">Demo: username "demo", password "demo"</p>
-    <div class="bevo-badge">
-      <span>🐂</span>
-      <span class="bevo-badge-text">Bevo Approved</span>
+    <div class="texas-badge">
+      <span>🤘</span>
+      <span class="texas-badge-text">Texas Longhorns</span>
     </div>
   </div>
 </div>

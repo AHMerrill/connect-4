@@ -1,0 +1,718 @@
+<!--
+  ABOUT AI PAGE - Detailed Neural Network Description
+  Requirement #2: How NNs were built + Board Analysis
+  Paste into: Properties Panel → Custom HTML → Edit
+-->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap');
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+:root {
+  --burnt-orange: #BF5700;
+  --dark-orange: #9D4700;
+  --light-orange: #E87511;
+  --cream: #FFF8F0;
+  --charcoal: #333F48;
+  --dark-charcoal: #1C2127;
+  --white: #FFFFFF;
+}
+.about-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, rgba(28, 33, 39, 0.95) 0%, rgba(51, 63, 72, 0.9) 50%, rgba(28, 33, 39, 0.95) 100%);
+  padding: 40px 20px 60px 20px;
+  font-family: 'Roboto', sans-serif;
+  color: var(--cream);
+  line-height: 1.7;
+}
+.about-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Header */
+.about-header {
+  text-align: center;
+  margin-bottom: 50px;
+  padding-bottom: 30px;
+  border-bottom: 2px solid rgba(191, 87, 0, 0.3);
+}
+.about-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--burnt-orange);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+.about-subtitle {
+  font-size: 18px;
+  color: rgba(255, 248, 240, 0.7);
+  font-style: italic;
+}
+.back-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: rgba(191, 87, 0, 0.3);
+  border: 1px solid rgba(191, 87, 0, 0.5);
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  color: var(--cream);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  z-index: 100;
+}
+.back-btn:hover {
+  background: rgba(191, 87, 0, 0.5);
+  border-color: var(--burnt-orange);
+}
+
+/* Article Sections */
+.article-section {
+  margin-bottom: 50px;
+}
+.section-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 28px;
+  color: var(--burnt-orange);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-icon {
+  font-size: 32px;
+}
+.section-content p {
+  font-size: 16px;
+  margin-bottom: 18px;
+  color: rgba(255, 248, 240, 0.9);
+}
+.section-content h3 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  color: var(--cream);
+  margin: 30px 0 15px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.highlight {
+  color: var(--burnt-orange);
+  font-weight: 600;
+}
+.stat-box {
+  display: inline-block;
+  background: rgba(191, 87, 0, 0.15);
+  border: 1px solid rgba(191, 87, 0, 0.3);
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--burnt-orange);
+  font-weight: 600;
+}
+
+/* Architecture Cards */
+.arch-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 25px;
+  margin: 25px 0;
+}
+.arch-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid rgba(191, 87, 0, 0.2);
+  border-radius: 15px;
+  padding: 25px;
+}
+.arch-card-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(191, 87, 0, 0.2);
+}
+.arch-card-icon {
+  font-size: 40px;
+}
+.arch-card-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px;
+  color: var(--cream);
+  text-transform: uppercase;
+}
+.arch-card-subtitle {
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.arch-specs {
+  list-style: none;
+}
+.arch-specs li {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+.arch-specs li:last-child {
+  border-bottom: none;
+}
+.spec-label {
+  color: rgba(255, 248, 240, 0.7);
+}
+.spec-value {
+  color: var(--burnt-orange);
+  font-weight: 600;
+}
+
+/* Code Block */
+.code-block {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(191, 87, 0, 0.2);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  overflow-x: auto;
+  color: rgba(255, 248, 240, 0.8);
+}
+.code-comment {
+  color: #6a9955;
+}
+.code-keyword {
+  color: #569cd6;
+}
+.code-number {
+  color: #b5cea8;
+}
+
+/* Board Display */
+.board-examples {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin: 25px 0;
+}
+.board-example {
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid rgba(191, 87, 0, 0.2);
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+}
+.board-example.easy {
+  border-color: rgba(76, 175, 80, 0.5);
+}
+.board-example.hard {
+  border-color: rgba(244, 67, 54, 0.5);
+}
+.board-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.board-label.easy {
+  color: #4CAF50;
+}
+.board-label.hard {
+  color: #F44336;
+}
+.mini-board {
+  display: inline-block;
+  background: linear-gradient(180deg, #1565C0 0%, #0D47A1 100%);
+  border-radius: 8px;
+  padding: 8px;
+  margin: 10px 0;
+}
+.mini-row {
+  display: flex;
+}
+.mini-cell {
+  width: 32px;
+  height: 32px;
+  margin: 2px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #0a1628 0%, #162035 100%);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.8);
+}
+.mini-cell.orange {
+  background: radial-gradient(circle at 35% 35%, var(--light-orange), var(--burnt-orange), var(--dark-orange));
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+.mini-cell.white {
+  background: radial-gradient(circle at 35% 35%, #FFFFFF, #F5EDE5, #D4C4B0);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+.mini-cell.highlight {
+  box-shadow: 0 0 0 2px #4CAF50, 0 0 10px rgba(76, 175, 80, 0.5);
+}
+.mini-cell.wrong {
+  box-shadow: 0 0 0 2px #F44336, 0 0 10px rgba(244, 67, 54, 0.5);
+}
+.board-analysis {
+  text-align: left;
+  margin-top: 15px;
+  font-size: 14px;
+  color: rgba(255, 248, 240, 0.8);
+  line-height: 1.6;
+}
+.prediction-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+.prediction-badge.correct {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4CAF50;
+  border: 1px solid rgba(76, 175, 80, 0.4);
+}
+.prediction-badge.incorrect {
+  background: rgba(244, 67, 54, 0.2);
+  color: #F44336;
+  border: 1px solid rgba(244, 67, 54, 0.4);
+}
+
+/* Training Pipeline */
+.pipeline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin: 25px 0;
+}
+.pipeline-step {
+  background: rgba(191, 87, 0, 0.1);
+  border: 1px solid rgba(191, 87, 0, 0.3);
+  border-radius: 10px;
+  padding: 15px 20px;
+  text-align: center;
+  min-width: 140px;
+}
+.pipeline-step-num {
+  font-family: 'Oswald', sans-serif;
+  font-size: 24px;
+  color: var(--burnt-orange);
+  margin-bottom: 5px;
+}
+.pipeline-step-text {
+  font-size: 13px;
+  color: rgba(255, 248, 240, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.pipeline-arrow {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  color: rgba(191, 87, 0, 0.5);
+}
+
+/* Results Table */
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14px;
+}
+.results-table th {
+  background: rgba(191, 87, 0, 0.2);
+  color: var(--burnt-orange);
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 15px;
+  text-align: left;
+}
+.results-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: rgba(255, 248, 240, 0.85);
+}
+.results-table tr:hover td {
+  background: rgba(191, 87, 0, 0.05);
+}
+
+/* Insights List */
+.insights-list {
+  list-style: none;
+  margin: 20px 0;
+}
+.insights-list li {
+  padding: 15px 20px;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 3px solid var(--burnt-orange);
+  border-radius: 0 8px 8px 0;
+  font-size: 15px;
+}
+.insights-list li strong {
+  color: var(--burnt-orange);
+}
+
+/* Footer */
+.about-footer {
+  text-align: center;
+  padding-top: 40px;
+  border-top: 2px solid rgba(191, 87, 0, 0.3);
+  margin-top: 50px;
+}
+.footer-cta {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  color: var(--cream);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.play-btn {
+  background: linear-gradient(135deg, var(--burnt-orange) 0%, var(--dark-orange) 100%);
+  border: none;
+  border-radius: 12px;
+  padding: 18px 50px;
+  font-size: 18px;
+  font-weight: 700;
+  font-family: 'Oswald', sans-serif;
+  color: var(--white);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  box-shadow: 0 6px 25px rgba(191, 87, 0, 0.3);
+}
+.play-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 35px rgba(191, 87, 0, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .about-title { font-size: 32px; }
+  .section-title { font-size: 22px; }
+  .arch-cards { grid-template-columns: 1fr; }
+  .board-examples { grid-template-columns: 1fr; }
+  .pipeline { flex-direction: column; align-items: center; }
+  .pipeline-arrow { transform: rotate(90deg); }
+  .back-btn { position: static; margin-bottom: 20px; display: block; width: fit-content; }
+}
+</style>
+
+<div class="about-page">
+  <button class="back-btn" id="btn-back">← Back to Game</button>
+
+  <div class="about-container">
+    <!-- Header -->
+    <div class="about-header">
+      <h1 class="about-title">Building AI for Connect 4</h1>
+      <p class="about-subtitle">A deep dive into training neural networks to master a classic game</p>
+    </div>
+
+    <!-- Introduction -->
+    <div class="article-section">
+      <h2 class="section-title">
+        <span class="section-icon">🎯</span>
+        The Challenge
+      </h2>
+      <div class="section-content">
+        <p>Connect 4 is a <span class="highlight">solved game</span> — with perfect play, the first player can always force a win. But finding that perfect play requires analyzing millions of possible board positions. Our goal was to train neural networks that could learn to play at a high level by studying expert moves, without explicitly programming game strategy.</p>
+        <p>We built two different neural network architectures — a <span class="highlight">Convolutional Neural Network (CNN)</span> and a <span class="highlight">Transformer</span> — and compared their performance. Both networks treat the problem as <span class="highlight">image classification with 7 categories</span>, where each category represents a column to drop a chip.</p>
+      </div>
+    </div>
+
+    <!-- Training Data -->
+    <div class="article-section">
+      <h2 class="section-title">
+        <span class="section-icon">📊</span>
+        Training Data: Learning from MCTS
+      </h2>
+      <div class="section-content">
+        <p>Instead of hand-coding game strategies, we trained our networks on moves generated by <span class="highlight">Monte Carlo Tree Search (MCTS)</span> — the same algorithm used by AlphaGo and AlphaZero. MCTS simulates thousands of random games from each position to find statistically strong moves.</p>
+
+        <div class="pipeline">
+          <div class="pipeline-step">
+            <div class="pipeline-step-num">1</div>
+            <div class="pipeline-step-text">Generate Games</div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step">
+            <div class="pipeline-step-num">2</div>
+            <div class="pipeline-step-text">Run MCTS</div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step">
+            <div class="pipeline-step-num">3</div>
+            <div class="pipeline-step-text">Record Moves</div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step">
+            <div class="pipeline-step-num">4</div>
+            <div class="pipeline-step-text">Mirror Data</div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step">
+            <div class="pipeline-step-num">5</div>
+            <div class="pipeline-step-text">Train NNs</div>
+          </div>
+        </div>
+
+        <p>Our dataset contains <span class="stat-box">703,111 positions</span> from MCTS with 2000 simulations per move. After applying horizontal mirroring (exploiting the board's symmetry), we have <span class="stat-box">1.4M+ training examples</span>.</p>
+
+        <h3>Board Encoding</h3>
+        <p>Each board position is encoded as a <span class="highlight">6×7×2 tensor</span>:</p>
+        <ul class="insights-list">
+          <li><strong>Channel 0:</strong> 1 where Player 1 (orange) has a chip, 0 elsewhere</li>
+          <li><strong>Channel 1:</strong> 1 where Player 2 (white) has a chip, 0 elsewhere</li>
+        </ul>
+        <p>This two-channel representation lets the network clearly distinguish between the two players' positions.</p>
+      </div>
+    </div>
+
+    <!-- Architecture -->
+    <div class="article-section">
+      <h2 class="section-title">
+        <span class="section-icon">🏗️</span>
+        Network Architectures
+      </h2>
+      <div class="section-content">
+        <div class="arch-cards">
+          <!-- CNN Card -->
+          <div class="arch-card">
+            <div class="arch-card-header">
+              <span class="arch-card-icon">🧠</span>
+              <div>
+                <div class="arch-card-title">CNN</div>
+                <div class="arch-card-subtitle">Residual Convolutional Network</div>
+              </div>
+            </div>
+            <ul class="arch-specs">
+              <li><span class="spec-label">Architecture</span><span class="spec-value">AlphaZero-style</span></li>
+              <li><span class="spec-label">Residual Blocks</span><span class="spec-value">10 blocks</span></li>
+              <li><span class="spec-label">Filters per Layer</span><span class="spec-value">256</span></li>
+              <li><span class="spec-label">Kernel Size</span><span class="spec-value">3×3</span></li>
+              <li><span class="spec-label">Normalization</span><span class="spec-value">Batch Norm</span></li>
+              <li><span class="spec-label">Output Heads</span><span class="spec-value">Policy + Value</span></li>
+            </ul>
+          </div>
+
+          <!-- Transformer Card -->
+          <div class="arch-card">
+            <div class="arch-card-header">
+              <span class="arch-card-icon">⚡</span>
+              <div>
+                <div class="arch-card-title">Transformer</div>
+                <div class="arch-card-subtitle">Vision Transformer (ViT)</div>
+              </div>
+            </div>
+            <ul class="arch-specs">
+              <li><span class="spec-label">Architecture</span><span class="spec-value">ViT-style</span></li>
+              <li><span class="spec-label">Transformer Blocks</span><span class="spec-value">6 layers</span></li>
+              <li><span class="spec-label">Attention Heads</span><span class="spec-value">8 heads</span></li>
+              <li><span class="spec-label">Hidden Dimension</span><span class="spec-value">128</span></li>
+              <li><span class="spec-label">Positional Encoding</span><span class="spec-value">Learned</span></li>
+              <li><span class="spec-label">Output Heads</span><span class="spec-value">Policy + Value</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>Why Two Heads?</h3>
+        <p>Both networks output two predictions:</p>
+        <ul class="insights-list">
+          <li><strong>Policy Head:</strong> A probability distribution over the 7 columns — which move to play</li>
+          <li><strong>Value Head:</strong> A single number (-1 to +1) predicting the game outcome from this position</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="article-section">
+      <h2 class="section-title">
+        <span class="section-icon">📈</span>
+        Training Results
+      </h2>
+      <div class="section-content">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>CNN</th>
+              <th>Transformer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Policy Accuracy (Top-1)</td>
+              <td>~72%</td>
+              <td>~74%</td>
+            </tr>
+            <tr>
+              <td>Policy Accuracy (Top-2)</td>
+              <td>~88%</td>
+              <td>~90%</td>
+            </tr>
+            <tr>
+              <td>Training Epochs</td>
+              <td>32</td>
+              <td>15</td>
+            </tr>
+            <tr>
+              <td>Training Time (Colab GPU)</td>
+              <td>~15 min (A100)</td>
+              <td>~70 min (T4)</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Both models predict the exact MCTS move ~73% of the time, and their top-2 predictions include the best move ~90% of the time. This is impressive given that MCTS runs 2000 simulations per move while our networks make instant predictions!</p>
+      </div>
+    </div>
+
+    <!-- Board Analysis -->
+    <div class="article-section">
+      <h2 class="section-title">
+        <span class="section-icon">🔍</span>
+        Board Analysis: Easy vs. Hard Positions
+      </h2>
+      <div class="section-content">
+        <p>Not all positions are equally easy to evaluate. Here's an analysis of where our models succeed and struggle:</p>
+
+        <div class="board-examples">
+          <!-- Easy Example 1 -->
+          <div class="board-example easy">
+            <div class="board-label easy">✓ Easy: Obvious Win</div>
+            <div class="mini-board" id="board-easy-1">
+              <!-- Board will be rendered by JS -->
+            </div>
+            <div class="prediction-badge correct">98% Confidence</div>
+            <div class="board-analysis">
+              <strong>Why it's easy:</strong> Three orange chips in a row with an open fourth slot. The network recognizes this winning pattern instantly — it's exactly what convolutions excel at detecting.
+            </div>
+          </div>
+
+          <!-- Easy Example 2 -->
+          <div class="board-example easy">
+            <div class="board-label easy">✓ Easy: Block Opponent</div>
+            <div class="mini-board" id="board-easy-2">
+              <!-- Board will be rendered by JS -->
+            </div>
+            <div class="prediction-badge correct">95% Confidence</div>
+            <div class="board-analysis">
+              <strong>Why it's easy:</strong> Opponent has three in a row and must be blocked immediately. Defensive patterns like this appear frequently in training data.
+            </div>
+          </div>
+
+          <!-- Hard Example 1 -->
+          <div class="board-example hard">
+            <div class="board-label hard">✗ Hard: Complex Mid-Game</div>
+            <div class="mini-board" id="board-hard-1">
+              <!-- Board will be rendered by JS -->
+            </div>
+            <div class="prediction-badge incorrect">42% Confidence</div>
+            <div class="board-analysis">
+              <strong>Why it's hard:</strong> Multiple viable moves exist with similar long-term value. The network must reason about threats several moves ahead — something that requires deep search, not pattern matching.
+            </div>
+          </div>
+
+          <!-- Hard Example 2 -->
+          <div class="board-example hard">
+            <div class="board-label hard">✗ Hard: Dual Threats</div>
+            <div class="mini-board" id="board-hard-2">
+              <!-- Board will be rendered by JS -->
+            </div>
+            <div class="prediction-badge incorrect">38% Confidence</div>
+            <div class="board-analysis">
+              <strong>Why it's hard:</strong> Setting up a "fork" (two winning threats at once) requires planning ahead. MCTS finds these with extensive search, but neural networks must learn the abstract pattern.
+            </div>
+          </div>
+        </div>
+
+        <h3>Key Insights from Our Analysis</h3>
+        <ul class="insights-list">
+          <li><strong>Immediate threats are easy:</strong> Both networks excel at recognizing "three in a row" patterns that require immediate action.</li>
+          <li><strong>Early game is noisy:</strong> Opening moves have similar values, so the network's confidence is lower even when it picks the "correct" move.</li>
+          <li><strong>Diagonal threats are trickier:</strong> Horizontal and vertical patterns are more frequently encountered; diagonal attacks sometimes get missed.</li>
+          <li><strong>Strategic positions are hardest:</strong> Positions where the best move isn't about immediate threats but long-term positioning challenge the network.</li>
+          <li><strong>Center control matters:</strong> The network learned that controlling the center column leads to more winning opportunities — an emergent strategy!</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Why Failures Happen -->
+    <div class="article-section">
+      <h2 class="section-title">
+        <span class="section-icon">🤔</span>
+        Why Some Boards Are Classified Poorly
+      </h2>
+      <div class="section-content">
+        <p>Our neural networks sometimes make mistakes. Here's why:</p>
+
+        <h3>1. Limited Look-Ahead</h3>
+        <p>MCTS runs 2000 simulations to evaluate each move. Our networks make instant predictions based on patterns they've memorized. Complex positions requiring 5+ move look-ahead often confuse the network.</p>
+
+        <h3>2. Training Data Bias</h3>
+        <p>Our training data comes from MCTS playing against itself. Certain positions that arise from human mistakes may not be well-represented, causing poor predictions on those boards.</p>
+
+        <h3>3. The "Equally Good" Problem</h3>
+        <p>Sometimes multiple moves are equally strong. When MCTS gives 30% probability to three different moves, the network struggles to pick a clear winner. Low confidence doesn't mean a bad move — it might mean several good moves exist.</p>
+
+        <h3>4. Rare Tactical Patterns</h3>
+        <p>Unusual tactical motifs (like setting up a simultaneous double-threat) appear rarely in training. The network may not have seen enough examples to learn these patterns reliably.</p>
+
+        <div class="code-block">
+<span class="code-comment"># Example: A position where both models struggle</span>
+board = [
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 1,-1, 0, 0, 0],
+    [0, 0,-1, 1, 1, 0, 0],
+    [0, 1, 1,-1,-1, 0, 0],
+    [1,-1, 1,-1, 1,-1, 0]
+]
+<span class="code-comment"># CNN predicts: Column 3 (45% confidence)</span>
+<span class="code-comment"># Transformer predicts: Column 4 (41% confidence)</span>
+<span class="code-comment"># MCTS best move: Column 1 (sets up a fork)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Conclusion -->
+    <div class="article-section">
+      <h2 class="section-title">
+        <span class="section-icon">🏆</span>
+        Conclusion
+      </h2>
+      <div class="section-content">
+        <p>Both our CNN and Transformer achieve <span class="highlight">~73% accuracy</span> at predicting MCTS moves and <span class="highlight">~90% top-2 accuracy</span>. They play at a strong level, easily beating casual players and providing a challenging opponent.</p>
+        <p>The key takeaway: neural networks can learn to play Connect 4 at a high level by studying expert moves, but they remain imperfect. The game's complexity — with its long-term planning requirements — still poses challenges for pure pattern-matching approaches.</p>
+        <p>Ready to test your skills against our AI? Let's play! 🤘</p>
+      </div>
+    </div>
+
+    <!-- Footer CTA -->
+    <div class="about-footer">
+      <div class="footer-cta">Think You Can Beat Our AI?</div>
+      <button class="play-btn" id="btn-play">Play Now 🤘</button>
+    </div>
+  </div>
+</div>

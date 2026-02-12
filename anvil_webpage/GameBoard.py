@@ -1,6 +1,6 @@
 # ============================================
 # GAME BOARD PAGE - LONGHORNS VERSION
-# With Rematch Button and AI vs AI Mode
+# With Rematch Button, AI vs AI Mode, and Last Move Highlight
 # Paste this in the Code tab for GameBoard
 # ============================================
 from ._anvil_designer import GameBoardTemplate
@@ -23,6 +23,9 @@ class GameBoard(GameBoardTemplate):
         self.random_opening_moves = 4  # First 4 moves are random
         self.move_count = 0
         self.ai_move_delay = 800  # ms between AI moves
+
+        # Track last move for highlighting
+        self.last_move = None  # (row, col)
 
         if ai_vs_ai:
             # In AI vs AI mode: CNN is orange (player 1), Transformer is white (player 2)
@@ -57,13 +60,13 @@ class GameBoard(GameBoardTemplate):
         from anvil.js.window import document
         self.doc = document
 
-        # Set game info
+        # Set game info - always show "Player vs MODEL"
         game_info = self.doc.getElementById('game-info')
         if game_info:
             if self.ai_vs_ai:
                 game_info.textContent = f"CNN vs Transformer"
             else:
-                game_info.textContent = f"{self.username} vs {self.model_type}"
+                game_info.textContent = f"Player vs {self.model_type}"
 
         # Setup AI vs AI banner
         if self.ai_vs_ai:
@@ -100,6 +103,9 @@ class GameBoard(GameBoardTemplate):
                     return handler
                 cell.addEventListener('click', make_click_handler(col))
 
+            # Setup column hover highlight (only in human mode)
+            self.setup_column_hover()
+
         # Header buttons
         new_game_btn = self.doc.getElementById('btn-new-game')
         quit_btn = self.doc.getElementById('btn-quit')
@@ -128,6 +134,49 @@ class GameBoard(GameBoardTemplate):
         elif not self.is_human_turn:
             # AI goes first in human vs AI
             setTimeout(self.make_ai_move, 1000)
+
+    def setup_column_hover(self):
+        """Setup column hover highlight effect"""
+        # Add hover listeners to hover cells
+        for col in range(7):
+            hover_cell = self.doc.getElementById(f'hover-{col}').parentElement
+            if hover_cell:
+                def make_enter_handler(column):
+                    def handler(event):
+                        self.highlight_column(column, True)
+                    return handler
+                def make_leave_handler(column):
+                    def handler(event):
+                        self.highlight_column(column, False)
+                    return handler
+                hover_cell.addEventListener('mouseenter', make_enter_handler(col))
+                hover_cell.addEventListener('mouseleave', make_leave_handler(col))
+
+        # Add hover listeners to board cells
+        for col in range(7):
+            for row in range(6):
+                cell = self.doc.querySelector(f'.cell[data-row="{row}"][data-col="{col}"]')
+                if cell:
+                    def make_enter_handler(column):
+                        def handler(event):
+                            self.highlight_column(column, True)
+                        return handler
+                    def make_leave_handler(column):
+                        def handler(event):
+                            self.highlight_column(column, False)
+                        return handler
+                    cell.addEventListener('mouseenter', make_enter_handler(col))
+                    cell.addEventListener('mouseleave', make_leave_handler(col))
+
+    def highlight_column(self, col, highlight):
+        """Add or remove highlight from all cells in a column"""
+        for row in range(6):
+            cell = self.doc.querySelector(f'.cell[data-row="{row}"][data-col="{col}"]')
+            if cell:
+                if highlight:
+                    cell.classList.add('column-highlight')
+                else:
+                    cell.classList.remove('column-highlight')
 
     def rematch(self):
         """Start a new game with the same settings"""
@@ -175,18 +224,33 @@ class GameBoard(GameBoardTemplate):
                 return row
         return -1
 
+    def clear_last_move_highlight(self):
+        """Remove highlight from previous last move"""
+        if self.last_move:
+            old_row, old_col = self.last_move
+            old_chip = self.doc.getElementById(f'chip-{old_row}-{old_col}')
+            if old_chip:
+                old_chip.classList.remove('last-move')
+
     def make_move(self, row, col, value, color):
         """Place a chip"""
         self.board[row][col] = value
+
+        # Clear previous last move highlight
+        self.clear_last_move_highlight()
 
         chip = self.doc.getElementById(f'chip-{row}-{col}')
         if chip:
             chip.classList.add(color)
             chip.classList.add('dropping')
+            chip.classList.add('last-move')
 
             def remove_drop():
                 chip.classList.remove('dropping')
             setTimeout(remove_drop, 500)
+
+        # Update last move tracker
+        self.last_move = (row, col)
 
     def make_ai_move(self):
         """AI makes a move (human vs AI mode)"""
