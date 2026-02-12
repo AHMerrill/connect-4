@@ -1,0 +1,3 @@
+
+# ignore models
+network_training/cnn.h5
