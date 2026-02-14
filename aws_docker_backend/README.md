@@ -1,6 +1,6 @@
-# Connect 4 AWS Backend - Updated Deployment
+# Connect 4 AWS Backend
 
-This folder contains the corrected and updated files for deploying the Connect 4 AI backend on AWS.
+This folder contains the Docker-based backend for the Connect 4 AI game, hosted on AWS Lightsail.
 
 ## Files Included
 
@@ -10,96 +10,97 @@ This folder contains the corrected and updated files for deploying the Connect 4
 | `model_wrappers.py` | Model loading and prediction functions |
 | `connect4_engine.py` | Game logic and move validation |
 | `requirements.txt` | Python dependencies |
-| `.env` | Environment variables (update with your Anvil Uplink key) |
+| `.env.example` | Example environment variables (copy to `.env`) |
 | `Dockerfile` | Docker container configuration |
 | `docker-compose.yml` | Docker Compose orchestration |
-| `models/cnn.h5` | CNN model file |
-| `models/transformer_simple.h5` | Transformer model file |
+| `start.sh` | Startup script for non-Docker use |
+| `models/` | Placeholder for model files (see below) |
 
-## Key Fixes from Previous Version
+## Model Files (Not Included)
 
-1. **Real Models Used**: Backend now loads and uses actual CNN/Transformer models instead of MockModel
-2. **Added `anvil.server.wait_forever()`**: Ensures the Uplink connection stays alive
-3. **Single Uplink Key**: Key is only in `.env` file, not hardcoded elsewhere
-4. **Fixed Model Input Shapes**: Proper board conversion for model predictions
-5. **Player Format Handling**: Supports both numeric (1, 2) and string ('plus', 'minus') formats
-6. **Proper Error Handling**: Graceful fallback if models fail to load
+The trained model files are too large for Git (~150MB total). Download them separately:
+
+| File | Size | Location |
+|------|------|----------|
+| `cnn.h5` | ~142MB | Place in `models/` folder |
+| `transformer.weights.h5` | ~10MB | Place in `models/` folder |
+
+**Models are available in the GitHub Releases or can be trained using the notebooks in `/network_training/`.**
 
 ## Deployment Instructions
 
-### 1. Update Environment Variables
-
-Edit the `.env` file with your Anvil Uplink key:
-```
-ANVIL_UPLINK_KEY=your_actual_uplink_key_here
-```
-
-### 2. Transfer Files to AWS
+### 1. Setup Environment Variables
 
 ```bash
-# From your local machine
-scp -r updated/* ubuntu@your-aws-ip:/home/ubuntu/connect4/
+cp .env.example .env
+# Edit .env with your Anvil Uplink key
 ```
 
-### 3. Build and Run with Docker
+### 2. Transfer Files to AWS Lightsail
+
+Using FileZilla or SCP:
+```bash
+scp -r aws_docker_backend/* bitnami@your-aws-ip:/home/bitnami/connect4-backend/
+```
+
+### 3. Add Model Files
+
+Transfer your trained models to the AWS instance:
+```bash
+scp models/cnn.h5 bitnami@your-aws-ip:/home/bitnami/connect4-backend/models/
+scp models/transformer.weights.h5 bitnami@your-aws-ip:/home/bitnami/connect4-backend/models/
+```
+
+### 4. Build and Run with Docker
 
 ```bash
 # SSH into your AWS instance
-ssh ubuntu@your-aws-ip
+ssh bitnami@your-aws-ip
 
 # Navigate to the project directory
-cd /home/ubuntu/connect4
+cd /home/bitnami/connect4-backend
 
-# Build the Docker image
-docker build -t connect4-backend:latest .
+# Build the Docker image (use --network=host if DNS issues)
+sudo docker build --network=host -t my-anvil-app .
 
 # Run with Docker Compose
-docker-compose up -d
+sudo docker compose up -d
+
+# Check logs
+sudo docker compose logs
 ```
 
-### 4. Verify Deployment
-
-Check container status:
-```bash
-docker ps
-docker logs connect4-backend
-```
+### 5. Verify Deployment
 
 You should see:
 ```
-Loading CNN model...
-CNN model loaded successfully
-Loading Transformer model...
-Transformer model loaded successfully
-Connecting to Anvil...
-Connected to Anvil successfully!
-```
-
-### 5. Test Connection
-
-In your Anvil app, the connection test should now work:
-```python
-result = anvil.server.call('check_connection')
-# Should return: "AWS Server is Online!"
+✅ CNN model loaded successfully
+✅ Transformer model loaded successfully
+✅ Connected to Anvil successfully!
+Backend ready - waiting for game requests...
 ```
 
 ## Troubleshooting
 
 ### Container keeps restarting
-Check logs: `docker logs connect4-backend`
+```bash
+sudo docker compose logs
+```
 
 ### Models not loading
-- Verify model files exist in `models/` directory
-- Check file permissions: `chmod 644 models/*.h5`
+- Verify model files exist: `ls -la models/`
+- Check volume mapping in `docker-compose.yml`
 
 ### Anvil connection fails
-- Verify uplink key in `.env` is correct
-- Ensure port 443 outbound is open in AWS security group
-- Check if key matches what's in your Anvil app settings
+- Verify uplink key in `.env` or `docker-compose.yml`
+- Ensure outbound HTTPS (port 443) is open
 
-### Game not responding
-- Check if backend is running: `docker ps`
-- View real-time logs: `docker logs -f connect4-backend`
+### Rebuild after changes
+```bash
+sudo docker compose down
+sudo docker build --network=host -t my-anvil-app .
+sudo docker compose up -d
+```
 
 ## Architecture
 
@@ -108,14 +109,23 @@ Anvil Frontend (Web)
         |
         | (HTTPS via Anvil Uplink)
         v
-AWS Backend (Docker Container)
+AWS Lightsail (Docker Container)
         |
         +-- aws_backend.py (Server)
         |
         +-- model_wrappers.py (AI Models)
         |       |
         |       +-- CNN Model (cnn.h5)
-        |       +-- Transformer Model (transformer_simple.h5)
+        |       +-- Transformer Model (transformer.weights.h5)
         |
         +-- connect4_engine.py (Game Logic)
 ```
+
+## Team
+
+- Alina Hota
+- Arturo Juarez
+- Zan Merrill
+- Rohini Sondole
+
+**Course:** MSBA Optimization II - Spring 2026, UT Austin

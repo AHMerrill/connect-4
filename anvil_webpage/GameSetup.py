@@ -1,6 +1,6 @@
 # ============================================
 # GAME SETUP PAGE - Python Code
-# With Modal Support for How to Play, About Models, Credits
+# With Modal Support for How to Play and Credits
 # Paste this in the Code tab for GameSetup
 # ============================================
 from ._anvil_designer import GameSetupTemplate
@@ -18,11 +18,6 @@ class GameSetup(GameSetupTemplate):
         """Called when the form is shown"""
         from anvil.js.window import document
         self.doc = document
-
-        # Set welcome text
-        welcome = self.doc.getElementById('welcome-text')
-        if welcome:
-            welcome.textContent = f"Welcome, {self.username}!"
 
         # Get elements
         self.cnn_card = self.doc.getElementById('card-cnn')
@@ -57,32 +52,29 @@ class GameSetup(GameSetupTemplate):
 
     def setup_modals(self):
         """Setup modal open/close handlers"""
-        # Footer buttons to open modals
+        # Footer buttons
         btn_how_to_play = self.doc.getElementById('btn-how-to-play')
-        btn_about_models = self.doc.getElementById('btn-about-models')
+        btn_model_report = self.doc.getElementById('btn-model-report')
         btn_credits = self.doc.getElementById('btn-credits')
 
         if btn_how_to_play:
             btn_how_to_play.addEventListener('click', lambda e: self.open_modal('modal-how-to-play'))
-        if btn_about_models:
-            btn_about_models.addEventListener('click', lambda e: self.open_modal('modal-about-models'))
+        if btn_model_report:
+            btn_model_report.addEventListener('click', lambda e: open_form('ModelReport', username=self.username))
         if btn_credits:
             btn_credits.addEventListener('click', lambda e: self.open_modal('modal-credits'))
 
         # Close buttons
         close_how_to_play = self.doc.getElementById('close-how-to-play')
-        close_about_models = self.doc.getElementById('close-about-models')
         close_credits = self.doc.getElementById('close-credits')
 
         if close_how_to_play:
             close_how_to_play.addEventListener('click', lambda e: self.close_modal('modal-how-to-play'))
-        if close_about_models:
-            close_about_models.addEventListener('click', lambda e: self.close_modal('modal-about-models'))
         if close_credits:
             close_credits.addEventListener('click', lambda e: self.close_modal('modal-credits'))
 
         # Close on overlay click
-        modals = ['modal-how-to-play', 'modal-about-models', 'modal-credits']
+        modals = ['modal-how-to-play', 'modal-credits']
         for modal_id in modals:
             modal = self.doc.getElementById(modal_id)
             if modal:

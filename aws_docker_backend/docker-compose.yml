@@ -1,18 +1,10 @@
-version: '3.8'
-
 services:
-  connect4-backend:
-    build: .
-    container_name: connect4-backend
+  anvil-uplink:
+    container_name: anvil-uplink
+    image: my-anvil-app
     restart: always
-    env_file:
-      - .env
+    network_mode: "host"
     volumes:
-      - ./models:/app/models:ro  # Mount models directory (read-only)
-      - ./logs:/app/logs         # Mount logs directory
-    network_mode: host
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+      - ./models:/app/models
+    environment:
+      - ANVIL_UPLINK_KEY=server_5GREDJABFF3PRT4ABWNTTYVV-W6WI735Y5M6XCIOE

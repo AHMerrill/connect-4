@@ -1,0 +1,15 @@
+# Environment variables (contains secrets)
+.env
+
+# Mac files
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+
+# Models (too large for Git - download separately)
+models/*.h5
+
+# Logs
+*.log

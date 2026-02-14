@@ -606,9 +606,9 @@
         <span class="footer-link-icon">📖</span>
         How to Play
       </button>
-      <button class="footer-link" id="btn-about-models">
-        <span class="footer-link-icon">🤖</span>
-        About Models
+      <button class="footer-link" id="btn-model-report">
+        <span class="footer-link-icon">📊</span>
+        Model Report
       </button>
       <button class="footer-link" id="btn-credits">
         <span class="footer-link-icon">👥</span>
@@ -656,69 +656,6 @@
   </div>
 </div>
 
-<!-- ABOUT MODELS MODAL -->
-<div class="modal-overlay" id="modal-about-models">
-  <div class="modal-content">
-    <button class="modal-close" id="close-about-models">&times;</button>
-    <h2 class="modal-title">
-      <span class="modal-title-icon">🤖</span>
-      About the Models
-    </h2>
-    <p class="modal-subtitle">AI Opponents</p>
-    <div class="modal-body">
-      <h3>🧠 CNN (Convolutional Neural Network)</h3>
-      <p>An <span class="highlight">AlphaZero-style</span> residual CNN that treats the board like an image.</p>
-      <ul>
-        <li>Uses 2D convolutions to scan the 6x7 board</li>
-        <li>Residual blocks detect patterns like lines, threats, and blocks</li>
-        <li>Trained on <span class="stat">700K+ game positions</span> from MCTS simulations</li>
-        <li>Outputs a <span class="highlight">policy</span> (best column) and <span class="highlight">value</span> (win probability)</li>
-      </ul>
-
-      <h3>⚡ Transformer</h3>
-      <p>A <span class="highlight">Vision Transformer</span> architecture adapted for Connect 4.</p>
-      <ul>
-        <li>Uses attention mechanisms to analyze relationships between all 42 positions</li>
-        <li>6 transformer blocks with 8 attention heads each</li>
-        <li>Trained on <span class="stat">1.4M+ positions</span> (with mirror augmentation)</li>
-        <li>Achieves <span class="stat">77% policy accuracy</span> and <span class="stat">92% top-2 accuracy</span></li>
-      </ul>
-
-      <h3>How They Were Trained</h3>
-      <p>Both models learned by studying moves from <span class="highlight">Monte Carlo Tree Search (MCTS)</span> - an algorithm that simulates thousands of games to find the best moves. The models learned to predict what MCTS would play.</p>
-
-      <h3>Model Comparison</h3>
-      <table class="model-compare">
-        <tr>
-          <th>Feature</th>
-          <th>CNN</th>
-          <th>Transformer</th>
-        </tr>
-        <tr>
-          <td>Architecture</td>
-          <td>Residual CNN</td>
-          <td>Vision Transformer</td>
-        </tr>
-        <tr>
-          <td>Training Data</td>
-          <td>700K+ positions</td>
-          <td>1.4M+ positions</td>
-        </tr>
-        <tr>
-          <td>Approach</td>
-          <td>Pattern recognition</td>
-          <td>Attention-based</td>
-        </tr>
-        <tr>
-          <td>Style</td>
-          <td>Visual patterns</td>
-          <td>Positional relationships</td>
-        </tr>
-      </table>
-    </div>
-  </div>
-</div>
-
 <!-- CREDITS MODAL -->
 <div class="modal-overlay" id="modal-credits">
   <div class="modal-content">
@@ -757,9 +694,6 @@
         <li><span class="highlight">Docker</span> - Containerization</li>
         <li><span class="highlight">Python</span> - Backend development</li>
       </ul>
-
-      <h3>Course</h3>
-      <p>Optimization II - Spring 2026</p>
 
       <h3>Source Code</h3>
       <a href="https://github.com/AHMerrill/connect-4" target="_blank" class="github-link">

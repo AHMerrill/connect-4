@@ -1,0 +1,7 @@
+# Placeholder to keep this folder in Git
+#
+# Add your model files here:
+# - cnn.h5 (~142MB)
+# - transformer.weights.h5 (~10MB)
+#
+# Models can be trained using notebooks in /network_training/
