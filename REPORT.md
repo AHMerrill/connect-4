@@ -271,25 +271,25 @@ The model correctly identifies the center column as the strongest opening move, 
 
 ### 3.6 Model Capacity
 
-The Transformer model has significantly fewer parameters than the CNN:
+The Transformer model has substantially fewer trainable parameters than the final CNN while maintaining competitive policy accuracy.
 
 | Component | Parameters |
 |-----------|------------|
-| Patch Projection | ~256 |
+| Patch Projection | 384 |
 | Positional Embeddings | 5,376 |
 | Class Token | 128 |
-| 6 Transformer Blocks | ~600K |
-| Policy Head | ~9K |
-| Value Head | ~25K |
-| **Total** | **~640K** |
+| 6 Transformer Blocks | 794,880 |
+| Policy Head | 8,321 |
+| Value Head | 24,833 |
+| **Total** | **834,178** |
 
-Despite having roughly 18x fewer trainable parameters than the CNN (640K vs 11.8M), the Transformer achieves competitive policy accuracy, demonstrating the efficiency of attention-based architectures for this task.
+Compared with the final CNN (~11.8M trainable parameters), the Transformer uses about 14x fewer trainable weights.
 
 ### 3.7 Comparison: CNN vs Transformer
 
 | Aspect | CNN | Transformer |
 |--------|-----|-------------|
-| Trainable Parameters | 11.8M | ~640K |
+| Trainable Parameters | 11.8M | 834,178 |
 | Inductive Bias | Local spatial patterns | Global attention |
 | Policy Accuracy | ~75-78%* | 77.29% |
 | Inference Speed | Faster | Slower |
@@ -297,7 +297,7 @@ Despite having roughly 18x fewer trainable parameters than the CNN (640K vs 11.8
 
 *CNN accuracy varies based on exact configuration and training details.
 
-Both architectures achieve strong performance, with the choice depending on deployment constraints. The CNN may be preferred for latency-sensitive applications, while the Transformer offers competitive accuracy with significantly fewer parameters.
+Both architectures achieve strong performance. In this project, the CNN provides high-capacity local pattern modeling, while the Transformer provides competitive policy quality with much lower parameter count.
 
 ### 3.8 Implementation Notes
 
@@ -381,16 +381,24 @@ def transformer_predict_move(board_6x7x2):
 
 ### 4.5 API Interface
 
-The backend exposes a simple prediction endpoint:
+The backend exposes `process_move(board_data)` via Anvil Uplink.
 
-**Input:**
-- Board state as 6x7x2 tensor
-- Channel 0: Current player's pieces (1 where player has a stone, 0 elsewhere)
-- Channel 1: Opponent's pieces (1 where opponent has a stone, 0 elsewhere)
+**Input (`board_data` dictionary):**
+- `board`: 6x7 integer board (`1=plus`, `-1=minus`, `0=empty`)
+- `current_player`: `'plus'`, `'minus'`, `1`, `2`, or `-1`
+- `model_type`: `'CNN'` or `'Transformer'`
+
+**Backend behavior:**
+- If `current_player` is minus, board values are multiplied by `-1` so models always evaluate from the current-player perspective.
+- Runs selected model if loaded; otherwise uses a center-preferring fallback policy.
+- Applies legality checks and fallback correction if needed.
 
 **Output:**
-- Best column (0-6) for the current player to play
-- Optionally: Full policy distribution and value estimate
+- `status`: `'success'` or `'error'`
+- `recommended_move`: integer column index `0-6`
+- `model_used`: model name string
+- `symmetry_applied`: boolean
+- `using_real_model`: boolean
 
 ### 4.6 Scaling Considerations
 
@@ -453,39 +461,28 @@ def board_to_nn_input(board, player):
 ### 5.3 User Interface
 
 **Board Visualization:**
-- Graphical board display with colored pieces (Yellow/Red)
-- Column numbers (0-6) for move selection
+- Graphical 6x7 board with colored chips (Burnt Orange / White)
+- Hover-row chip preview for human turns
 - Visual highlighting of the last move
 - Win/draw detection and announcement
 
 **Game Controls:**
 - Model selection (CNN or Transformer)
-- First player selection (Human or AI)
-- Column selection via number input
-- Quit option during gameplay
+- Side selection (Player 1 Burnt Orange or Player 2 White)
+- Click-to-drop interaction by column
+- New game, rematch, and quit buttons
+- Setup-page footer links: How to Play, Model Report, Credits
 
 ### 5.4 AI Integration
 
-**Transformer Prediction:**
-```python
-def transformer_predict(board, player):
-    """Get move prediction from Transformer."""
-    # Converts board to (42, 2) format
-    # Returns: (best_column, policy_distribution, value_estimate)
-```
+AI turns are processed by calling backend `process_move`, which:
 
-**CNN Prediction:**
-```python
-def cnn_predict(board, player):
-    """Get move prediction from CNN."""
-    # Uses (6, 7, 2) format directly
-    # Returns: (best_column, policy_distribution, value_estimate)
-```
+- Prepares board perspective for current player (symmetry flip for minus player)
+- Runs selected model wrapper (`get_cnn_move` or `get_transformer_move`)
+- Masks/filters invalid moves via legality checks
+- Falls back to a deterministic center-priority move policy when model is unavailable
 
-**Illegal Move Masking:**
-- Policy outputs are masked to zero for full columns
-- Remaining probabilities are renormalized
-- Ensures AI only selects legal moves
+This deployment path uses direct model inference for low-latency gameplay (no in-game MCTS loop).
 
 ### 5.5 Game Modes
 
@@ -497,43 +494,25 @@ def cnn_predict(board, player):
 
 **AI vs AI:**
 - Watch Transformer play against CNN
-- Configurable delay between moves for observation
-- Move-by-move display with confidence percentages
+- First 4 opening moves are random for diversity
+- Fixed delay between AI turns for watchability
 - Useful for comparing model behavior
 
-### 5.6 Gameplay Example
+### 5.6 Gameplay Flow (Anvil)
 
-```
-==================================================
-       CONNECT 4
-==================================================
-
-1=Transformer, 2=CNN: 1
-1=You first, 2=AI first: 1
-
-You=X, AI=O. Columns 0-6. 'q' to quit.
-
-  0 1 2 3 4 5 6
- ---------------
-| . . . . . . . |
-| . . . . . . . |
-| . . . . . . . |
-| . . . . . . . |
-| . . . . . . . |
-| . . . X . . . |
- ---------------
-
-AI thinking...
-AI plays 3 (29%)
-```
+1. User logs in and opens **Game Setup**.
+2. User selects model (`CNN` or `Transformer`) and side (`Player 1` or `Player 2`).
+3. On the **Game Board**, user clicks a column to drop a chip.
+4. Frontend sends board state + player + model choice to backend.
+5. Backend returns `recommended_move`; frontend animates AI move and updates turn state.
+6. Game ends on win/draw and exposes rematch or settings options.
 
 ### 5.7 Technical Implementation
 
 **Dependencies:**
 - TensorFlow/Keras for model inference
 - NumPy for array operations
-- Matplotlib for board visualization
-- IPython for interactive display updates
+- Anvil Uplink SDK for server communication
 
 **Model Loading:**
 - Transformer: Weights loaded into rebuilt architecture
@@ -546,12 +525,25 @@ AI plays 3 (29%)
 
 ```
 connect-4/
+├── anvil_webpage/
+│   ├── LoginPage.html / .py
+│   ├── GameSetup.html / .py
+│   ├── GameBoard.html / .py
+│   └── ModelReport.html / .py
+├── aws_docker_backend/
+│   ├── aws_backend.py
+│   ├── model_wrappers.py
+│   ├── connect4_engine.py
+│   ├── Dockerfile
+│   ├── docker-compose.yml
+│   └── requirements.txt
 ├── network_training/
-│   ├── transformer_builder.ipynb   # Local Transformer training
-│   ├── transformer_colab.ipynb     # Colab version with AWS code
-│   ├── cnn_builder.ipynb           # CNN training and evaluation
-│   ├── transformer.weights.h5      # Trained Transformer weights
-│   └── Using the CNN readme.txt    # CNN usage documentation
+│   ├── CNN/
+│   │   ├── cnn_builder.ipynb
+│   │   └── Using the CNN readme.txt
+│   └── Transformer/
+│       ├── transformer_colab.ipynb
+│       └── transformer.weights.h5
 ├── data_generation/
 │   └── data_generation_no_guide.ipynb  # MCTS data generation
 ├── data_balance/
@@ -591,7 +583,7 @@ MCTS Self-Play (2000 simulations/move)
  Training    Training
      │           │
      v           v
-  cnn.h5   transformer.weights.h5
+final_supervised_256f.h5   transformer.weights.h5
      │           │
      └─────┬─────┘
            │
