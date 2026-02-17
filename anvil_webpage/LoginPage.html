@@ -110,22 +110,22 @@
 }
 .login-input {
   width: 100%;
-  background: rgba(255, 255, 255, 0.06);
-  border: 2px solid rgba(191, 87, 0, 0.3);
+  background: rgba(0, 0, 0, 0.35);
+  border: 2px solid rgba(191, 87, 0, 0.45);
   border-radius: 10px;
-  color: var(--cream);
+  color: #FFFFFF;
   padding: 16px 20px;
   font-size: 16px;
   font-family: 'Roboto', sans-serif;
   transition: all 0.3s ease;
 }
 .login-input::placeholder {
-  color: #666;
+  color: rgba(255, 248, 240, 0.72);
 }
 .login-input:focus {
   outline: none;
   border-color: var(--burnt-orange);
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.48);
   box-shadow: 0 0 20px rgba(191, 87, 0, 0.2);
 }
 .error-message {
@@ -181,7 +181,62 @@
   text-transform: uppercase;
   letter-spacing: 2px;
 }
+
+/* Theme Toggle */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(191, 87, 0, 0.3);
+  border: 1px solid rgba(191, 87, 0, 0.5);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  z-index: 100;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+.theme-toggle:hover {
+  background: rgba(191, 87, 0, 0.5);
+  transform: scale(1.1);
+}
+
+/* Light Mode */
+.light-mode .login-page {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.62) 0%, rgba(245, 240, 235, 0.55) 50%, rgba(255, 255, 255, 0.62) 100%),
+    url('https://images.unsplash.com/photo-1595169359806-eee943bd8b97?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat fixed;
+}
+.light-mode .login-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(250, 248, 245, 0.95) 100%);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(191, 87, 0, 0.2);
+}
+.light-mode .game-subtitle { color: var(--charcoal); }
+.light-mode .tagline { color: #888; }
+.light-mode .login-input {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--charcoal);
+  border-color: rgba(191, 87, 0, 0.3);
+}
+.light-mode .login-input::placeholder { color: #999; }
+.light-mode .login-input:focus { background: rgba(0, 0, 0, 0.06); }
+.light-mode .demo-hint { color: #888; }
+.light-mode .bevo-badge {
+  background: rgba(191, 87, 0, 0.08);
+  border-color: rgba(191, 87, 0, 0.2);
+}
+.light-mode .bevo-bg, .light-mode .bevo-bg-left { opacity: 0.08; }
+.light-mode .theme-toggle {
+  background: rgba(191, 87, 0, 0.1);
+  border-color: rgba(191, 87, 0, 0.3);
+}
 </style>
+<button class="theme-toggle" id="theme-toggle" title="Toggle light/dark mode">🌙</button>
 <div class="login-page">
   <div class="bevo-bg">🐂</div>
   <div class="bevo-bg-left">🐂</div>
@@ -198,10 +253,22 @@
       <div id="error-msg" class="error-message"></div>
       <button id="login-btn" class="login-btn">Hook 'Em & Enter</button>
     </div>
-    <p class="demo-hint">Demo: username "demo", password "demo"</p>
     <div class="bevo-badge">
       <span>🐂</span>
       <span class="bevo-badge-text">Bevo Approved</span>
     </div>
   </div>
 </div>
+<script>
+(function(){
+  var btn = document.getElementById('theme-toggle');
+  var saved = localStorage.getItem('c4-theme');
+  if (saved === 'light') { document.body.classList.add('light-mode'); btn.textContent = '☀️'; }
+  btn.addEventListener('click', function(){
+    document.body.classList.toggle('light-mode');
+    var isLight = document.body.classList.contains('light-mode');
+    btn.textContent = isLight ? '☀️' : '🌙';
+    localStorage.setItem('c4-theme', isLight ? 'light' : 'dark');
+  });
+})();
+</script>

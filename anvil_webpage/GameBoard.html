@@ -396,7 +396,50 @@
   .table-surface { padding: 20px 15px 25px 15px; }
   .game-over-buttons { flex-direction: column; }
 }
+
+/* Theme Toggle */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(191, 87, 0, 0.3);
+  border: 1px solid rgba(191, 87, 0, 0.5);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  z-index: 100;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+.theme-toggle:hover { background: rgba(191, 87, 0, 0.5); transform: scale(1.1); }
+
+/* Light Mode */
+.light-mode .game-page {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(245,240,235,0.52) 50%, rgba(255,255,255,0.62) 100%),
+    url('https://images.unsplash.com/photo-1595169359806-eee943bd8b97?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat fixed;
+}
+.light-mode .game-info { color: var(--charcoal); text-shadow: none; }
+.light-mode .header-btn { background: rgba(191,87,0,0.1); border-color: rgba(191,87,0,0.3); color: var(--charcoal); }
+.light-mode .header-btn:hover { background: rgba(191,87,0,0.2); }
+.light-mode .turn-indicator.your-turn { background: rgba(191,87,0,0.1); }
+.light-mode .turn-indicator.ai-turn { color: var(--charcoal); background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.15); }
+.light-mode .turn-indicator.loser { color: #666; background: rgba(0,0,0,0.05); border-color: #ccc; }
+.light-mode .turn-indicator.draw { color: var(--charcoal); background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.15); }
+.light-mode .status-message { color: #666; text-shadow: none; }
+.light-mode .game-over-btn.secondary { background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.15); color: var(--charcoal); }
+.light-mode .ut-text { color: var(--burnt-orange); }
+.light-mode .ai-vs-ai-banner { background: rgba(191,87,0,0.08); border-color: rgba(191,87,0,0.2); }
+.light-mode .ai-vs-ai-info { color: #666; }
+.light-mode .ai-vs-ai-score { color: var(--charcoal); }
+.light-mode .theme-toggle { background: rgba(191,87,0,0.1); border-color: rgba(191,87,0,0.3); }
 </style>
+<button class="theme-toggle" id="theme-toggle" title="Toggle light/dark mode">🌙</button>
 <div class="game-page">
   <!-- Header -->
   <div class="game-header">
@@ -505,3 +548,16 @@
     <span class="ut-text">Texas Longhorns</span>
   </div>
 </div>
+<script>
+(function(){
+  var btn = document.getElementById('theme-toggle');
+  var saved = localStorage.getItem('c4-theme');
+  if (saved === 'light') { document.body.classList.add('light-mode'); btn.textContent = '☀️'; }
+  btn.addEventListener('click', function(){
+    document.body.classList.toggle('light-mode');
+    var isLight = document.body.classList.contains('light-mode');
+    btn.textContent = isLight ? '☀️' : '🌙';
+    localStorage.setItem('c4-theme', isLight ? 'light' : 'dark');
+  });
+})();
+</script>

@@ -533,8 +533,67 @@
 .model-compare tr:hover td {
   background: rgba(191, 87, 0, 0.05);
 }
+
+/* Theme Toggle */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(191, 87, 0, 0.3);
+  border: 1px solid rgba(191, 87, 0, 0.5);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  z-index: 1001;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+.theme-toggle:hover { background: rgba(191, 87, 0, 0.5); transform: scale(1.1); }
+
+/* Light Mode */
+.light-mode .setup-page {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.64) 0%, rgba(245,240,235,0.56) 50%, rgba(255,255,255,0.64) 100%),
+    url('https://images.unsplash.com/photo-1595169359806-eee943bd8b97?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat fixed;
+}
+.light-mode .welcome-text { color: #666; }
+.light-mode .setup-subtitle { color: var(--charcoal); opacity: 0.5; }
+.light-mode .model-card { background: rgba(255,255,255,0.85); border-color: rgba(191,87,0,0.25); box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+.light-mode .model-card.selected { background: rgba(191,87,0,0.08); }
+.light-mode .model-name { color: var(--charcoal); }
+.light-mode .model-desc { color: #666; }
+.light-mode .player-card { background: rgba(255,255,255,0.85); border-color: rgba(0,0,0,0.1); box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+.light-mode .player-card.selected.orange { background: rgba(191,87,0,0.08); }
+.light-mode .player-card.selected.white { background: rgba(200,190,180,0.15); }
+.light-mode .player-name { color: var(--charcoal); }
+.light-mode .player-desc { color: #666; }
+.light-mode .start-btn:disabled { background: #ccc; color: #999; }
+.light-mode .status-text { color: #888; }
+.light-mode .divider::before, .light-mode .divider::after { background: rgba(191,87,0,0.2); }
+.light-mode .divider-text { color: #999; }
+.light-mode .ai-vs-ai-btn { background: rgba(255,255,255,0.85); border-color: rgba(0,0,0,0.15); color: var(--charcoal); }
+.light-mode .ai-vs-ai-hint { color: #888; }
+.light-mode .footer-link { background: rgba(255,255,255,0.6); border-color: rgba(191,87,0,0.25); color: var(--charcoal); }
+.light-mode .modal-overlay { background: rgba(255,255,255,0.85); }
+.light-mode .modal-content { background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(250,248,245,0.98) 100%); box-shadow: 0 25px 60px rgba(0,0,0,0.15); }
+.light-mode .modal-close { color: #aaa; }
+.light-mode .modal-subtitle { color: #888; }
+.light-mode .modal-body { color: var(--charcoal); }
+.light-mode .modal-body p, .light-mode .modal-body li { color: #444; }
+.light-mode .team-member { background: rgba(191,87,0,0.06); border-color: rgba(191,87,0,0.15); }
+.light-mode .team-member-name { color: var(--charcoal); }
+.light-mode .university-badge { background: rgba(191,87,0,0.06); }
+.light-mode .github-link { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1); color: var(--charcoal); }
+.light-mode .model-compare td { color: #444; border-bottom-color: rgba(0,0,0,0.06); }
+.light-mode .theme-toggle { background: rgba(191,87,0,0.1); border-color: rgba(191,87,0,0.3); }
 </style>
 
+<button class="theme-toggle" id="theme-toggle" title="Toggle light/dark mode">🌙</button>
 <div class="setup-page">
   <div class="setup-container">
     <p id="welcome-text" class="welcome-text">Welcome, Player!</p>
@@ -709,3 +768,16 @@
     </div>
   </div>
 </div>
+<script>
+(function(){
+  var btn = document.getElementById('theme-toggle');
+  var saved = localStorage.getItem('c4-theme');
+  if (saved === 'light') { document.body.classList.add('light-mode'); btn.textContent = '☀️'; }
+  btn.addEventListener('click', function(){
+    document.body.classList.toggle('light-mode');
+    var isLight = document.body.classList.contains('light-mode');
+    btn.textContent = isLight ? '☀️' : '🌙';
+    localStorage.setItem('c4-theme', isLight ? 'light' : 'dark');
+  });
+})();
+</script>

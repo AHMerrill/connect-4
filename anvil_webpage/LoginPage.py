@@ -11,6 +11,7 @@ class LoginPage(LoginPageTemplate):
         self.init_components(**properties)
         # Valid credentials
         self.valid_users = {
+            "dan": "Optimization1234",
             "demo": "demo",
             "player1": "connect4",
             "admin": "admin123"

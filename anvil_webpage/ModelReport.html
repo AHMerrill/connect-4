@@ -21,7 +21,9 @@
 }
 .report-page {
   min-height: 100vh;
-  background: linear-gradient(180deg, rgba(28, 33, 39, 0.95) 0%, rgba(51, 63, 72, 0.9) 50%, rgba(28, 33, 39, 0.95) 100%);
+  background:
+    linear-gradient(180deg, rgba(28, 33, 39, 0.95) 0%, rgba(51, 63, 72, 0.9) 50%, rgba(28, 33, 39, 0.95) 100%),
+    url('https://images.unsplash.com/photo-1595169359806-eee943bd8b97?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat fixed;
   padding: 40px 20px 60px 20px;
   font-family: 'Roboto', sans-serif;
   color: var(--cream);
@@ -30,6 +32,12 @@
 .report-container {
   max-width: 950px;
   margin: 0 auto;
+  background: rgba(16, 21, 27, 0.82);
+  border: 1px solid rgba(191, 87, 0, 0.22);
+  border-radius: 16px;
+  padding: 28px 30px 24px 30px;
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
 }
 
 /* Header */
@@ -81,7 +89,7 @@
   gap: 5px;
   margin-bottom: 30px;
   flex-wrap: wrap;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.28);
   padding: 8px;
   border-radius: 12px;
 }
@@ -147,7 +155,7 @@
 .section p {
   font-size: 15px;
   margin-bottom: 15px;
-  color: rgba(255, 248, 240, 0.9);
+  color: rgba(255, 248, 240, 0.94);
 }
 .highlight {
   color: var(--burnt-orange);
@@ -172,7 +180,7 @@
   margin: 20px 0;
 }
 .info-card {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(191, 87, 0, 0.2);
   border-radius: 12px;
   padding: 20px;
@@ -195,8 +203,8 @@
 }
 .info-card li {
   padding: 6px 0;
-  color: rgba(255, 248, 240, 0.85);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: rgba(255, 248, 240, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 .info-card li:last-child {
   border-bottom: none;
@@ -217,7 +225,7 @@
   border-bottom: none;
 }
 .spec-label {
-  color: rgba(255, 248, 240, 0.7);
+  color: rgba(255, 248, 240, 0.8);
 }
 .spec-value {
   color: var(--burnt-orange);
@@ -277,8 +285,8 @@
 }
 .results-table td {
   padding: 10px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  color: rgba(255, 248, 240, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 248, 240, 0.9);
 }
 .results-table tr:hover td {
   background: rgba(191, 87, 0, 0.05);
@@ -292,7 +300,7 @@
   margin: 20px 0;
 }
 .board-example {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.06);
   border: 2px solid rgba(191, 87, 0, 0.2);
   border-radius: 15px;
   padding: 20px;
@@ -347,7 +355,7 @@
   text-align: left;
   margin-top: 12px;
   font-size: 13px;
-  color: rgba(255, 248, 240, 0.8);
+  color: rgba(255, 248, 240, 0.9);
   line-height: 1.5;
 }
 .prediction-badge {
@@ -444,10 +452,76 @@
   .tab-icon { display: none; }
   .pipeline { flex-direction: column; align-items: center; }
   .pipeline-arrow { transform: rotate(90deg); }
+  .report-container { padding: 18px 16px 16px 16px; }
+  .light-mode .report-container { padding: 18px 16px 16px 16px; }
   .back-btn { position: static; margin-bottom: 20px; display: block; width: fit-content; }
 }
+
+/* Theme Toggle */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(191, 87, 0, 0.3);
+  border: 1px solid rgba(191, 87, 0, 0.5);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  z-index: 100;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+.theme-toggle:hover { background: rgba(191, 87, 0, 0.5); transform: scale(1.1); }
+
+/* Light Mode */
+.light-mode .report-page {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.72) 0%, rgba(245,240,235,0.66) 50%, rgba(255,255,255,0.72) 100%),
+    url('https://images.unsplash.com/photo-1595169359806-eee943bd8b97?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat fixed;
+  color: var(--charcoal);
+}
+.light-mode .report-container {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(191, 87, 0, 0.2);
+  border-radius: 16px;
+  padding: 28px 30px 24px 30px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12);
+}
+.light-mode .report-header { border-bottom-color: rgba(191,87,0,0.2); }
+.light-mode .report-subtitle { color: #666; }
+.light-mode .tab-nav { background: rgba(0,0,0,0.07); }
+.light-mode .tab-btn { color: #888; }
+.light-mode .tab-btn:hover { color: var(--charcoal); background: rgba(191,87,0,0.1); }
+.light-mode .tab-btn.active { color: var(--white); background: var(--burnt-orange); }
+.light-mode .section p { color: #2f2f2f; }
+.light-mode .info-card { background: rgba(0,0,0,0.02); border-color: rgba(191,87,0,0.15); }
+.light-mode .info-card-title { color: var(--charcoal); }
+.light-mode .info-card li { color: #333; border-bottom-color: rgba(0,0,0,0.06); }
+.light-mode .spec-label { color: #666; }
+.light-mode .takeaway-box { background: rgba(191,87,0,0.06); border-color: rgba(191,87,0,0.2); }
+.light-mode .takeaway-text { color: var(--charcoal); }
+.light-mode .insights-list li { background: rgba(0,0,0,0.04); color: #333; }
+.light-mode .results-table th { background: rgba(191,87,0,0.12); }
+.light-mode .results-table td { color: #333; border-bottom-color: rgba(0,0,0,0.08); }
+.light-mode .results-table tr:hover td { background: rgba(191,87,0,0.04); }
+.light-mode .pipeline-step { background: rgba(191,87,0,0.06); border-color: rgba(191,87,0,0.2); }
+.light-mode .pipeline-step-text { color: #4a4a4a; }
+.light-mode .pipeline-arrow { color: rgba(191,87,0,0.4); }
+.light-mode .board-example { background: rgba(0,0,0,0.02); }
+.light-mode .board-analysis { color: #333; }
+.light-mode .back-btn { background: rgba(191,87,0,0.1); border-color: rgba(191,87,0,0.3); color: var(--charcoal); }
+.light-mode .report-footer { border-top-color: rgba(191,87,0,0.2); }
+.light-mode .arch-specs li { border-bottom-color: rgba(0,0,0,0.05); }
+.light-mode .stat-box { background: rgba(191,87,0,0.08); border-color: rgba(191,87,0,0.2); }
+.light-mode .theme-toggle { background: rgba(191,87,0,0.1); border-color: rgba(191,87,0,0.3); }
 </style>
 
+<button class="theme-toggle" id="theme-toggle" title="Toggle light/dark mode">🌙</button>
 <div class="report-page">
   <button class="back-btn" id="btn-back">← Back to Game</button>
 
@@ -850,6 +924,59 @@
           <li><strong>Two-head objective:</strong> policy supports move selection, value supports position scoring and future search integration.</li>
         </ul>
       </div>
+
+      <div class="section">
+        <h2 class="section-title">
+          <span class="section-icon">📐</span>
+          Loss Function & Optimization
+        </h2>
+        <p>Both models are trained jointly on the same two-head objective:</p>
+        <div class="takeaway-box">
+          <div class="takeaway-title">Combined Loss</div>
+          <div class="takeaway-text">L = categorical_crossentropy(policy) + 1.0 × MSE(value)</div>
+        </div>
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>CNN</th>
+              <th>Transformer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Policy Loss</td>
+              <td>Categorical Cross-Entropy</td>
+              <td>Categorical Cross-Entropy</td>
+            </tr>
+            <tr>
+              <td>Value Loss</td>
+              <td>Mean Squared Error</td>
+              <td>Mean Squared Error</td>
+            </tr>
+            <tr>
+              <td>Loss Weights (policy : value)</td>
+              <td>1.0 : 1.0 (default)</td>
+              <td>1.0 : 1.0 (explicit)</td>
+            </tr>
+            <tr>
+              <td>Optimizer</td>
+              <td>AdamW (LR + weight decay via grid search)</td>
+              <td>AdamW (LR=1e-3, weight decay=1e-4)</td>
+            </tr>
+            <tr>
+              <td>Sample Weighting</td>
+              <td>Per-sample move-depth weights</td>
+              <td>None</td>
+            </tr>
+          </tbody>
+        </table>
+        <ul class="insights-list">
+          <li><strong>Why cross-entropy for policy:</strong> the MCTS visit distribution is a probability vector over 7 columns; cross-entropy is the natural divergence measure between predicted and target distributions.</li>
+          <li><strong>Why MSE for value:</strong> the value target is a continuous scalar on [-1, 1]; MSE penalizes large prediction errors quadratically, encouraging tight calibration.</li>
+          <li><strong>CNN sample weighting:</strong> inverse-frequency weights per move-depth bin ensure that mid- and late-game positions contribute evenly to the loss, preventing early-game dominance.</li>
+        </ul>
+      </div>
     </div>
 
     <!-- TAB 4: Results -->
@@ -1113,3 +1240,16 @@
     </div>
   </div>
 </div>
+<script>
+(function(){
+  var btn = document.getElementById('theme-toggle');
+  var saved = localStorage.getItem('c4-theme');
+  if (saved === 'light') { document.body.classList.add('light-mode'); btn.textContent = '☀️'; }
+  btn.addEventListener('click', function(){
+    document.body.classList.toggle('light-mode');
+    var isLight = document.body.classList.contains('light-mode');
+    btn.textContent = isLight ? '☀️' : '🌙';
+    localStorage.setItem('c4-theme', isLight ? 'light' : 'dark');
+  });
+})();
+</script>

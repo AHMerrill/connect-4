@@ -7,4 +7,4 @@ services:
     volumes:
       - ./models:/app/models
     environment:
-      - ANVIL_UPLINK_KEY=server_5GREDJABFF3PRT4ABWNTTYVV-W6WI735Y5M6XCIOE
+      - ANVIL_UPLINK_KEY=server_7SWQE53FSZ2NJK2YTVYFMXSA-W6WI735Y5M6XCIOE
