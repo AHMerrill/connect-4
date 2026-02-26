@@ -1,6 +1,6 @@
 # Building AI for Connect 4
 
-**[Play the game →](https://w6wi735y5m6xcioe.anvil.app/2KZO5YXXHFDNTA5B5JALIJTB)**
+**[Play the game →](https://msba25optim2-25.anvil.app/)**
 
 A deep dive into training neural networks to master a classic game — **Connect 4, Longhorn Edition**.
 
