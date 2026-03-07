@@ -3,3 +3,6 @@
 network_training/cnn.h5
 .DS_Store
 network_training/.DS_Store
+# ignore large video files
+assets/*.mov
+assets/*.mp4

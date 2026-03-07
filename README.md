@@ -4,6 +4,20 @@
 
 A deep dive into training neural networks to master a classic game — **Connect 4, Longhorn Edition**.
 
+---
+
+## Demo
+
+| Login | Choose Your Battle |
+|---|---|
+| ![Login](assets/screenshot_login.png) | ![Choose Battle](assets/screenshot_choose_battle.png) |
+
+| Model Report | Transformer Wins |
+|---|---|
+| ![Model Report](assets/screenshot_model_report.png) | ![Transformer Wins](assets/screenshot_transformer_wins.png) |
+
+---
+
 Connect 4 is a solved game: with perfect play, the first player can always force a win. But finding that perfect play requires analyzing millions of possible board positions. This project trains neural networks that learn to play at a high level by studying expert moves from **Monte Carlo Tree Search (MCTS)**, without explicitly programming game strategy.
 
 We built two architectures — a **Convolutional Neural Network (CNN)** and a **Transformer** — and compared their performance. Both treat the problem as classification over 7 columns (where to drop a chip).
@@ -94,9 +108,7 @@ Run the notebooks from this repo directly in Colab:
 - Zan Merrill  
 - Rohini Sondole  
 
-**Technologies:** TensorFlow/Keras, Anvil, AWS Lightsail, Docker, Python  
-
-**Course:** Optimization II — Spring 2026, The University of Texas at Austin  
+**Technologies:** TensorFlow/Keras, Anvil, AWS Lightsail, Docker, Python
 
 **Source:** [github.com/AHMerrill/connect-4](https://github.com/AHMerrill/connect-4)
 
